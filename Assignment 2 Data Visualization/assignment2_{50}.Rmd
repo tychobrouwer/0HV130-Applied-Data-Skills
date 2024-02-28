@@ -1,0 +1,137 @@
+---
+title: "Assignment 2 - Data visualisations"
+subtitle: '2030071 - 1753320'
+author: "Group 50: Romée Simons and Tycho Brouwer"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#the needed packages are: 
+library(tidyverse)
+library(patchwork)
+library(plotly)
+library(ggdist)
+
+set.seed(30250) #makes sure random numbers are reproducible
+
+```
+
+
+```{r data, echo=FALSE}
+data <- read_csv('Sleep_health_and_lifestyle_dataset.csv', show_col_types = FALSE)
+
+```
+
+# Part 1 - Inspecting frequencies
+
+## Bar chart
+
+In the bar chart the frequency of the sleep disorders insomnia and sleep apnea of the given dataset are visualized.
+
+To create the plot, the fill property for ggplot was set to the `Sleep Disorder` column to color the different bars. The color was manually set using the `scale_fill_manual` function. The legend was turned of with `show.legend` property for the `geom_bar` function because this information is already given by the x-axis. The title of the plot was set using the `ggtitle` function and the x- and y-label where set using the `xlab` and `ylab` functions.
+
+```{r bar chart, echo=FALSE}
+data %>%
+  ggplot(aes(`Sleep Disorder`, fill=`Sleep Disorder`)) +
+    geom_bar(show.legend = FALSE, width=0.6) +
+    scale_fill_manual(values = c("salmon", "deepskyblue", "seagreen3") ) +
+    ggtitle("Frequency of sleep disorders") +
+    xlab("Sleep disorder") +
+    ylab("Frequency")
+```
+
+## Stacked histogram
+
+Most people in the data set give their sleep a score of between 6 and 9 on a scale of 0 to 10. However, women generally grade their sleep a higher grade because more than 90 percent of the people giving their sleep a score of 9 are women. The other grades are relatively equally distributed between women en men.
+
+Also, nobody in the data set gave their sleep a score of below 4 or a 10.
+
+```{r stacked histogram, echo=FALSE, warning=FALSE}
+p1 <- data %>%
+  ggplot(aes(x = `Quality of Sleep`, fill = Gender)) +
+    geom_histogram(position = "stack", binwidth=1) +
+    theme(legend.position="bottom") +
+    scale_fill_manual(values = c("salmon", "deepskyblue") ) +
+    ggtitle("Sleep quality grade per gender\n") +
+    xlab("Sleep quality grade [0-10]") +
+    ylab("Frequency") + 
+    scale_x_continuous(breaks = seq(0, 10, by = 1), limits = c(0, 10))
+```
+
+```{r stacked histogram position fill, echo=FALSE, warning=FALSE}
+p2 <- data %>%
+  ggplot(aes(x = `Quality of Sleep`, fill = Gender)) +
+    geom_histogram(show.legend = FALSE, position = "fill", binwidth=1) +
+    scale_fill_manual(values = c("salmon", "deepskyblue") ) +
+    ggtitle("Gender fraction per sleep\nquality grade") +
+    xlab("Sleep quality grade [0-10]") +
+    ylab("Gender faction") + 
+    scale_x_continuous(breaks = seq(0, 10, by = 1), limits = c(0, 10))
+```
+
+```{r stacked histogram combined, echo=FALSE, warning=FALSE}
+p1 + p2
+```
+
+# Part 2 - Mapping two numerical variables
+
+## Scatter Plot
+
+This graphs shows the relation between the variables `Stress Level` and `Sleep Duration`. For both genders a lower sleep duration is correlated to a higher stress level, and the relation is about the same for both genders as the regression lines seem to have the same slope. However, for Males the highest sleep duration of 8 hours or more results in a higher stress level than 8 hours or more sleep for Females.   
+
+```{r scatter plot, echo=FALSE, message=FALSE}
+data %>%
+ggplot(aes(`Sleep Duration`, `Stress Level`, colour = Gender, fill = Gender)) +
+  geom_jitter(width = 0.1, height = 0.2, alpha = 0.5, size = 2) +
+  stat_smooth(method = 'lm') +
+  facet_wrap(c('Gender')) +
+  scale_fill_manual(values = c('salmon', 'deepskyblue')) +
+  scale_colour_manual(values = c('salmon', 'deepskyblue')) +
+  scale_y_continuous(breaks = c(2, 4, 6, 8)) +
+  scale_x_continuous(breaks = c(6, 7, 8, 9)) +
+  labs(x = 'Sleep Duration (hours)', y = 'Stress Level [0-10]') +
+  ggtitle('Relation between Sleep Duration and Stress Level')
+
+```
+
+## Part 3 - Combo plots
+
+### Rain cloud plot: Half-violin geoms, boxplot and scatter plot
+
+The rain cloud plot shows how the variable `Sleep Duration` correlates to the variable `Sleep Disorder`. For example, sleep apnea is less common for people with a sleep duration of 7 hours and insomnia is most common for people with a sleep duration of about 6.5 hours. No sleep disorders are least common with a sleep duration of 6.5 hours and most common with a sleep duration of 7 hours ore more. Thus around 6.5 hours of sleep seems to result in the most sleep disorders. 
+
+The raincloud plots consists of a half violin gem with `stat_halfeye()`, a box plot with `geom_boxplot`, and a scatter plot with `stat_dots()`. To create the plot, the fill property for ggplot was set to `Sleep Disorder` to color the different violin gems/box plots/scatter plots. With the `scale_fill_manual()` function, the colors were manually set. The `alpha` property was used to make the box plot and violin plot more transparent. To align the different plots the properties `orientation`, `adjust`, `justification`, `side`, and `overflow` were used. 
+
+```{r rain cloud plot, echo=FALSE}
+data %>% 
+  ggplot(aes(y = `Sleep Disorder`, x = `Sleep Duration`,fill = `Sleep Disorder`)) +
+  stat_halfeye(alpha = 0.5, .width = 0, point_colour = NA, orientation = 'horizontal', adjust = 2, justification = -.2) +
+  geom_boxplot(alpha = 0.5, width = 0.2, size = 0.1, outlier.color = NA) +
+  scale_fill_manual(values = c("salmon", "deepskyblue", "seagreen3")) +
+  stat_dots(side = 'left', linewidth = 0, justification = 1.2, overflow = "compress") +
+  xlab('Sleep Duration (hours)') +
+  ylab('Sleep Disorder') +
+  ggtitle('Relation between Sleep Disorder and Sleep Duration')
+```
+
+
+
+
+
+
+
+
+
+
+
+

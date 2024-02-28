@@ -1,0 +1,133 @@
+---
+title: "Assignment - Reproducible Workflows"
+subtitle: "1753320 - 2030071"
+author: "Tycho Brouwer and Romée Simons"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: false
+bibliography: refs.bib
+csl: apa.csl
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(reprores)
+library(tibble)
+library(kableExtra)
+library(cli)
+library(ggplot2)
+library(tidyverse)
+```
+
+# Task 1 
+
+## Tycho Brouwer
+
+### Education
+
+- VWO NT&NG **(2015-2021)**
+- Bsc. Mechanical Engineering \@ TU/e **(2021-now)**
+
+### Employment
+
+- Sailing instructor **(2018-2023)**
+
+### Hobbies
+
+- Badminton at Panache
+- Homelab tickering
+- Programming
+
+## Romée Simons
+
+### Education
+
+- Gymnasium EM **(2018-2023)**
+- Pre University College \@ University of Leiden **(2021-2023)**
+- Bsc. Psychology & Technology \@ TU/e  **(2023-now)**
+
+### Employment
+
+- Ice cream shop **(summer 2023)**
+- Tutoring high school subjects **(2020-2023)**
+- Lyceo tutor **(2024-now)**
+
+### Hobbies 
+
+- Reading
+- Rowing and Running
+- Spending time with friends & family
+
+# Task 2
+
+To generate normally distributed values use the `rnorm(n, mean, std)` function from the `stats` package.
+
+```{r fifteen random values, echo=FALSE}
+rnorm(15, 0, 1)
+```
+
+# Task 3
+
+To add a footnote you can type '^' followed by text in square brackets '[]' ^[This is a footnote for task 3]
+
+\
+
+A horizontal rule can be added by typing `---`
+
+---
+
+\
+
+> A blockquote can be added by typing the '>' directly followed by the quote.
+
+# Task 4
+
+```{r display histogram}
+data("pets", package = "reprores")
+ggplot(pets, aes(age)) +
+  geom_histogram(binwidth = 1, fill = "lightblue") +
+  labs(
+    caption = "Histogram of the pet ages from the reprores dataset"
+  )
+```
+
+# Task 5
+
+To read the data, use the function `read_csv()` from the `tidyverse` package. To calculate the average use the function `mean()`.
+
+```{r average age, echo=FALSE}
+pets <- read_csv("https://psyteachr.github.io/reprores/data/pets.csv", show_col_types = FALSE)
+```
+
+The average age of the pets is `r mean(pets$age)`.
+
+# Task 6
+
+```{r summary, echo=FALSE}
+table <- pets %>%
+  group_by(country) %>%
+  summarise(
+    n = n(),
+    weight = mean(weight), 
+    age = mean(age)  
+  ) # Creating data and table 
+
+kable(table, 
+      digits = 2, 
+      col.names = c("Country", "N", "Weight", "Age"),
+      caption = "Table 1: Summary statistics for the pets dataset.") |>
+  kable_classic(full_width = FALSE, font_size = 20) |>
+  kable_styling(full_width = FALSE) |>
+  add_header_above(c(" " = 2, "Means" = 2)) # Making the table look nice
+```
+
+# Task 7
+
+Do not forget to include hobbies in [task number 1](#task-1). The above was made using the Rmarkdown package [@Baumer].
