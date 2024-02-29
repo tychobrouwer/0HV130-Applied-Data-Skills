@@ -1,7 +1,8 @@
 ---
-title: "Assignment 3 - Working with data & Data Relations"
-author: "Romée Simons & Tycho Brouwer"
+title: "Assignment 3 - Working with Data & Data Relations"
+author: "Romée Simons"
 subtitle: '2030071 - 1753320'
+author: "Group 50: Romée Simons and Tycho Brouwer"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -15,6 +16,5 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
 ```
 
