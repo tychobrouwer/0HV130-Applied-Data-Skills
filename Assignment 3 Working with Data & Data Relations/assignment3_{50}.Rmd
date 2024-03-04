@@ -1,0 +1,151 @@
+---
+title: "Assignment 2 - Data visualisations"
+subtitle: '2030071 - 1753320'
+author: "Group 50: Romée Simons and Tycho Brouwer"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#the needed packages are: 
+library(tidyverse)
+library(patchwork)
+library(plotly)
+library(ggdist)
+
+set.seed(30250) #makes sure random numbers are reproducible
+
+```
+
+# Task 1
+
+
+```{r, load data}
+education_data <- read_delim('education_data.csv', delim=";", show_col_types = FALSE)
+```
+
+# Task 2
+
+According to the glimpse function the dataset has 6 columns and 132 rows.
+
+From manually inspecting the data, the column **value** is missing a data for 33 rows.
+
+The period of the data is from 2011 to 2022, the values range from 14380 to 64990, so the range is 50610.
+
+```{r, display data, echo=FALSE}
+glimpse(education_data)
+View(education_data)
+```
+
+# Task 3
+
+```{r, rename columns}
+education_data <- education_data |>
+  rename(
+    measure = meAsur3,
+    gender_code = gender_coded,
+    education_type = EducationType,
+    degree_type = degreeType,
+    period = Period,
+    value = VALUE
+    )
+
+glimpse(education_data)
+```
+
+# Task 4
+
+The columns for the **measure**, **gender code**, **education type**, **degree type**, and **period** are of the type **character**.
+
+The **value** column has a datatype of **double**.
+
+# Task 5
+
+The primary dataset is the data from the **education_data.csv** file.
+
+From both datasets all rows are unique because unique returns the same number of columns.
+
+From the second dataset we want to incorporate the gender column.
+
+```{r}
+unique(education_data)
+```
+
+# Task 6
+
+```{r, create gender transform table}
+gender_code_data = tribble(
+  ~gender_code, ~gender,
+  "T001038", "Total",
+  "3000", "Men",
+  "4000", "Women",
+  "5000", "Other",
+  "6000", "prefer_not_to_say",
+)
+
+gender_code_data
+```
+
+# Task 7
+
+With the join operation the **gender** column has been added to the dataset. 
+
+Looking again at the missing data points, they are from all years in the dataset where both the education type is **Hoger beroepsonderwijs** and the degree type is **Wo-master**
+
+```{r, join data, message=FALSE}
+joined_data = inner_join(education_data, gender_code_data)
+
+View(joined_data)
+```
+
+# Task 8
+
+```{r, create tables}
+table1 = tribble(
+  ~Year, ~Program, ~Value,
+  2019, "uni_master", 41710,
+  2020, "uni_master", 46810,
+  2021, "uni_master", 46870,
+)
+
+table2 = tribble(
+  ~Year, ~Program, ~Value,
+  2018, "uni_master", 40860, 
+  2020, "uni_master", 46810,
+  2021, "uni_master", 46870,
+)
+
+table3 = tribble(
+  ~Year, ~`Total people`,
+  2018, 17181084,
+  2019, 17282163,
+  2020, 17407585,
+  2021, 17475415,
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
