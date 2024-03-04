@@ -1,5 +1,6 @@
 ---
-title: "Assignment 2 - Data visualisations"
+title: "Assignment 3 - Working with Data & Data Relations"
+author: "Romée Simons"
 subtitle: '2030071 - 1753320'
 author: "Group 50: Romée Simons and Tycho Brouwer"
 date: "`r Sys.Date()`"
