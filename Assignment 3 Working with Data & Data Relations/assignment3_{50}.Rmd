@@ -43,7 +43,7 @@ The period of the data is from 2011 to 2022, the values range from 14380 to 6499
 
 ```{r, display data, echo=FALSE}
 glimpse(education_data)
-View(education_data)
+glimpse(education_data)
 ```
 
 # Task 3
