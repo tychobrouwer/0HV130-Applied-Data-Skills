@@ -63,6 +63,14 @@ glimpse(education_data)
 ```
 
 # Task 4
+```{r}
+typeof(education_data$measure)
+typeof(education_data$gender_code)
+typeof(education_data$education_type)
+typeof(education_data$degree_type)
+typeof(education_data$period)
+typeof(education_data$value)
+```
 
 The columns for the **measure**, **gender code**, **education type**, **degree type**, and **period** are of the type **character**.
 
@@ -104,7 +112,7 @@ Looking again at the missing data points, they are from all years in the dataset
 ```{r, join data, message=FALSE}
 joined_data = inner_join(education_data, gender_code_data)
 
-View(joined_data)
+glimpse(joined_data)
 ```
 
 # Task 8
@@ -133,7 +141,7 @@ table3 = tribble(
 )
 ```
 
-
+# Task 9
 
 
 

@@ -11,9 +11,9 @@
 
 <meta name="author" content="Group 50: Romée Simons and Tycho Brouwer" />
 
-<meta name="date" content="2024-03-04" />
+<meta name="date" content="2024-03-05" />
 
-<title>Assignment 2 - Data visualisations</title>
+<title>Assignment 3 - Working with Data &amp; Data Relations</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1503,10 +1503,11 @@ font-size: 0.95em;
 
 
 
-<h1 class="title toc-ignore">Assignment 2 - Data visualisations</h1>
+<h1 class="title toc-ignore">Assignment 3 - Working with Data &amp; Data
+Relations</h1>
 <h3 class="subtitle">2030071 - 1753320</h3>
 <h4 class="author">Group 50: Romée Simons and Tycho Brouwer</h4>
-<h4 class="date">2024-03-04</h4>
+<h4 class="date">2024-03-05</h4>
 
 </div>
 
@@ -1556,6 +1557,18 @@ glimpse(education_data)</code></pre>
 </div>
 <div id="task-4" class="section level1">
 <h1>Task 4</h1>
+<pre class="r"><code>typeof(education_data$measure)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>typeof(education_data$gender_code)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>typeof(education_data$education_type)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>typeof(education_data$degree_type)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>typeof(education_data$period)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>typeof(education_data$value)</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
 <p>The columns for the <strong>measure</strong>, <strong>gender
 code</strong>, <strong>education type</strong>, <strong>degree
 type</strong>, and <strong>period</strong> are of the type
@@ -1617,7 +1630,16 @@ beroepsonderwijs</strong> and the degree type is
 <strong>Wo-master</strong></p>
 <pre class="r"><code>joined_data = inner_join(education_data, gender_code_data)
 
-View(joined_data)</code></pre>
+glimpse(joined_data)</code></pre>
+<pre><code>## Rows: 132
+## Columns: 7
+## $ measure        &lt;chr&gt; &quot;Gediplomeerden&quot;, &quot;Gediplomeerden&quot;, &quot;Gediplomeerden&quot;, &quot;…
+## $ gender_code    &lt;chr&gt; &quot;T001038&quot;, &quot;T001038&quot;, &quot;T001038&quot;, &quot;T001038&quot;, &quot;T001038&quot;, …
+## $ education_type &lt;chr&gt; &quot;Hoger beroepsonderwijs&quot;, &quot;Hoger beroepsonderwijs&quot;, &quot;Ho…
+## $ degree_type    &lt;chr&gt; &quot;Bachelor&quot;, &quot;Bachelor&quot;, &quot;Bachelor&quot;, &quot;Bachelor&quot;, &quot;Bachel…
+## $ period         &lt;chr&gt; &quot;2011/&#39;12&quot;, &quot;2012/&#39;13&quot;, &quot;2013/&#39;14&quot;, &quot;2014/&#39;15&quot;, &quot;2015/&#39;…
+## $ value          &lt;dbl&gt; 55240, 51370, 53400, 57250, 58920, 62530, 64190, 62210,…
+## $ gender         &lt;chr&gt; &quot;Total&quot;, &quot;Total&quot;, &quot;Total&quot;, &quot;Total&quot;, &quot;Total&quot;, &quot;Total&quot;, &quot;…</code></pre>
 </div>
 <div id="task-8" class="section level1">
 <h1>Task 8</h1>
@@ -1642,6 +1664,9 @@ table3 = tribble(
   2020, 17407585,
   2021, 17475415,
 )</code></pre>
+</div>
+<div id="task-9" class="section level1">
+<h1>Task 9</h1>
 </div>
 
 
