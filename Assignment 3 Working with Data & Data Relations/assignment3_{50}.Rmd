@@ -21,6 +21,7 @@ library(tidyverse)
 library(patchwork)
 library(plotly)
 library(ggdist)
+library(kableExtra)
 
 set.seed(30250) #makes sure random numbers are reproducible
 
@@ -43,7 +44,6 @@ The period of the data is from 2011 to 2022, the values range from 14380 to 6499
 
 ```{r, display data, echo=FALSE}
 glimpse(education_data)
-glimpse(education_data)
 ```
 
 # Task 3
@@ -56,7 +56,7 @@ education_data <- education_data |>
     education_type = EducationType,
     degree_type = degreeType,
     period = Period,
-    value = VALUE
+    graduates = VALUE
     )
 
 glimpse(education_data)
@@ -69,7 +69,7 @@ typeof(education_data$gender_code)
 typeof(education_data$education_type)
 typeof(education_data$degree_type)
 typeof(education_data$period)
-typeof(education_data$value)
+typeof(education_data$graduates)
 ```
 
 The columns for the **measure**, **gender code**, **education type**, **degree type**, and **period** are of the type **character**.
@@ -141,13 +141,65 @@ table3 = tribble(
 )
 ```
 
+table 1:
+```{r, echo=FALSE}
+kable(table1, align = 'c')
+```
+
+table 2:
+```{r, echo=FALSE}
+kable(table2, align = 'c')
+```
+
+table 3:
+```{r, echo=FALSE}
+kable(table3, align = 'c')
+```
+
 # Task 9
 
+Unique combination of table 1 and table 2:
 
+```{r, echo=FALSE}
+unionTable = union(table1, table2, )
+unionTable |>
+  kable(align = 'c')
+```
 
+With total people added:
 
+```{r, echo=FALSE}
+withTotalTable = bind_cols(unionTable, `Total people` = table3$`Total people`)
+withTotalTable |>
+  kable(align = 'c')
+```
 
+Duplicate rows from table 1 and table 2
 
+```{r, echo=FALSE}
+intersectTable = intersect(table1, table2, )
+intersectTable |>
+  kable(align = 'c')
+```
+
+# Task 10
+
+```{r}
+education_lvl_data <- read_delim('education_level_data.csv', delim=",", show_col_types = FALSE, skip = 3)
+
+summary(education_lvl_data)
+```
+
+# Task 11
+
+```{r, warning=FALSE}
+education_lvl_data |>
+  ggplot(aes(`year`, `value`, colour = degree)) +
+  geom_point() +
+  labs(x = 'year of graduation', y = 'number of graduates') +
+  ggtitle('Number of graduates in the Netherlands per degree over the years') +
+  scale_color_manual(name="Degree", labels = c("HBO Bachelor", "HBO Master", "WO Bachelor", "WO Master"), values = c("blue", "red", "violet", "green"))
+```
 
 
 
