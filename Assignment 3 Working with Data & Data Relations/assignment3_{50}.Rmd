@@ -191,6 +191,7 @@ summary(education_lvl_data)
 ```
 
 # Task 11
+According to the following graph, the number of HBO bachelor graduates are far greater than the other degrees over the years. After that, there are most WO Master graduates and WO Bachelor graduates. Data about HBO Master graduates are not in the graph. For WO Bachelors and WO Masters there is increase in the number of graduates over the years. For HBO Bachelors there is and increase up to around 2017, then a decrease and then again an increase of the number of graduates. However overall this the number of graduates of the HBO Bachelor has also grown. 
 
 ```{r, warning=FALSE}
 education_lvl_data |>
