@@ -1552,24 +1552,12 @@ font-size: 0.95em;
 </div>
 <div id="task-4" class="section level3">
 <h3>Task 4</h3>
-<p>We will now inspect the data of task 1 again, but focus on the basic data types. More details on datatypes can be found in the book.</p>
+<p>We will now inspect the data again, but focus on the basic data types. More details on datatypes can be found in the book.</p>
 <p>Determine the data types of all variables in the data set.</p>
 </div>
 <div id="task-5" class="section level3">
 <h3>Task 5</h3>
-<p>As you may have noticed, the genders in the dataset <code>(&quot;men&quot;, &quot;women&quot;, ...)</code> are represented using codes <code>(&quot;3000&quot;, &quot;4000&quot;, ...)</code>. This coding can be beneficial for various purposes, such as protecting sensitive information (in participant data collection) or optimizing data storage (in large datasets, such as those managed by the CBS).</p>
-<p>We have manually created a table containing the information to “decode” (i.e., transform from <code>&quot;3000&quot;, &quot;4000&quot;, ...</code> to <code>&quot;men&quot;, &quot;women&quot;, ...</code>) the genders in Task 3. By joining these datasets, we can add the decoded values to our data.</p>
-<p>Before proceeding with the join, let’s address the following questions:</p>
-<ul>
-<li><p>Which dataset serves as the primary one (i.e., the more important one)?</p></li>
-<li><p>What are the unique values in both datasets? (Hint: Use the <code>unique()</code></p></li>
-<li><p>Which columns of the secondary dataset are we interested in incorporating?</p></li>
-</ul>
-<p>After answering these questions, determine the most appropriate type of join to integrate these two datasets.</p>
-</div>
-<div id="task-6" class="section level3">
-<h3>Task 6</h3>
-<p>The following table is needed for Task 7. We want to enter the data into R, to be able to work with it later.</p>
+<p>The following table is needed for Task 6. We want to enter the data into R, to be able to work with it later.</p>
 <table>
 <thead>
 <tr class="header">
@@ -1601,6 +1589,18 @@ font-size: 0.95em;
 </tbody>
 </table>
 <p>Use the <code>tibble</code> command to create a table in R containing the data.</p>
+</div>
+<div id="task-6" class="section level3">
+<h3>Task 6</h3>
+<p>As you may have noticed, the genders in the dataset <code>(&quot;men&quot;, &quot;women&quot;, ...)</code> are represented using codes <code>(&quot;3000&quot;, &quot;4000&quot;, ...)</code>. This coding can be beneficial for various purposes, such as protecting sensitive information (in participant data collection) or optimizing data storage (in large datasets, such as those managed by the CBS).</p>
+<p>We have manually created a table containing the information to “decode” (i.e., transform from <code>&quot;3000&quot;, &quot;4000&quot;, ...</code> to <code>&quot;men&quot;, &quot;women&quot;, ...</code>) the genders in Task 5. By joining these datasets, we can add the decoded values to our data.</p>
+<p>Before proceeding with the join, let’s address the following questions:</p>
+<ul>
+<li><p>Which dataset serves as the primary one (i.e., the more important one)?</p></li>
+<li><p>What are the unique values in both datasets? (Hint: Use the <code>unique()</code></p></li>
+<li><p>Which columns of the secondary dataset are we interested in incorporating?</p></li>
+</ul>
+<p>After answering these questions, determine the most appropriate type of join to integrate these two datasets.</p>
 </div>
 <div id="task-7" class="section level3">
 <h3>Task 7</h3>
