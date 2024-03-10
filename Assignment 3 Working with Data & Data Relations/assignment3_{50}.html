@@ -1578,10 +1578,31 @@ type</strong>, and <strong>period</strong> are of the type
 </div>
 <div id="task-5" class="section level1">
 <h1>Task 5</h1>
+<pre class="r"><code>gender_code_data = tribble(
+  ~gender_code, ~gender,
+  &quot;T001038&quot;, &quot;Total&quot;,
+  &quot;3000&quot;, &quot;Men&quot;,
+  &quot;4000&quot;, &quot;Women&quot;,
+  &quot;5000&quot;, &quot;Other&quot;,
+  &quot;6000&quot;, &quot;prefer_not_to_say&quot;,
+)
+
+gender_code_data</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   gender_code gender           
+##   &lt;chr&gt;       &lt;chr&gt;            
+## 1 T001038     Total            
+## 2 3000        Men              
+## 3 4000        Women            
+## 4 5000        Other            
+## 5 6000        prefer_not_to_say</code></pre>
+</div>
+<div id="task-6" class="section level1">
+<h1>Task 6</h1>
 <p>The primary dataset is the data from the
 <strong>education_data.csv</strong> file.</p>
-<p>From both datasets all rows are unique because unique returns the
-same number of columns.</p>
+<p>From both datasets all rows are unique, unique returns the same
+number of columns.</p>
 <p>From the second dataset we want to incorporate the gender column.</p>
 <pre class="r"><code>unique(education_data)</code></pre>
 <pre><code>## # A tibble: 132 × 6
@@ -1598,19 +1619,7 @@ same number of columns.</p>
 ##  9 Gediplomeerden T001038     Hoger beroepsonderwi… Bachelor    2019/…     61690
 ## 10 Gediplomeerden T001038     Hoger beroepsonderwi… Bachelor    2020/…     64990
 ## # ℹ 122 more rows</code></pre>
-</div>
-<div id="task-6" class="section level1">
-<h1>Task 6</h1>
-<pre class="r"><code>gender_code_data = tribble(
-  ~gender_code, ~gender,
-  &quot;T001038&quot;, &quot;Total&quot;,
-  &quot;3000&quot;, &quot;Men&quot;,
-  &quot;4000&quot;, &quot;Women&quot;,
-  &quot;5000&quot;, &quot;Other&quot;,
-  &quot;6000&quot;, &quot;prefer_not_to_say&quot;,
-)
-
-gender_code_data</code></pre>
+<pre class="r"><code>unique(gender_code_data)</code></pre>
 <pre><code>## # A tibble: 5 × 2
 ##   gender_code gender           
 ##   &lt;chr&gt;       &lt;chr&gt;            

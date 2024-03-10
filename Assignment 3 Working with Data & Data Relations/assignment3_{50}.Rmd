@@ -78,18 +78,6 @@ The **value** column has a datatype of **double**.
 
 # Task 5
 
-The primary dataset is the data from the **education_data.csv** file.
-
-From both datasets all rows are unique because unique returns the same number of columns.
-
-From the second dataset we want to incorporate the gender column.
-
-```{r}
-unique(education_data)
-```
-
-# Task 6
-
 ```{r, create gender transform table}
 gender_code_data = tribble(
   ~gender_code, ~gender,
@@ -102,6 +90,20 @@ gender_code_data = tribble(
 
 gender_code_data
 ```
+
+# Task 6
+
+The primary dataset is the data from the **education_data.csv** file.
+
+From both datasets all rows are unique, unique returns the same number of columns.
+
+From the second dataset we want to incorporate the gender column.
+
+```{r}
+unique(education_data)
+unique(gender_code_data)
+```
+
 
 # Task 7
 
@@ -191,6 +193,7 @@ summary(education_lvl_data)
 ```
 
 # Task 11
+
 According to the following graph, the number of HBO bachelor graduates are far greater than the other degrees over the years. After that, there are most WO Master graduates and WO Bachelor graduates. Data about HBO Master graduates are not in the graph. For WO Bachelors and WO Masters there is increase in the number of graduates over the years. For HBO Bachelors there is and increase up to around 2017, then a decrease and then again an increase of the number of graduates. However overall this the number of graduates of the HBO Bachelor has also grown. 
 
 ```{r, warning=FALSE}
