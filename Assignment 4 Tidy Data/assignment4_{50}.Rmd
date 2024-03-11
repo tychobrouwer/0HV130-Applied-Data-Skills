@@ -1,0 +1,123 @@
+---
+title: "Assignment 4 - Tidy data"
+subtitle: '2030071 - 1753320'
+author: "Group 50: Romée Simons and Tycho Brouwer"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#the needed packages are: 
+library(tidyverse)
+library(patchwork)
+library(plotly)
+library(ggdist)
+library(kableExtra)
+library(tidyr)
+library(plyr)
+
+set.seed(30250) #makes sure random numbers are reproducible
+
+```
+
+# Task 1
+
+For importing the data set, **;** was used as the delimiter, the first 4 lines were skipped, and the final line was skipped by setting the maximum lines read.
+
+Also, the decimal mark was correctly set by setting the locale using the **,** decimal mark.
+
+The data for the **Subject**, the years, are in the character format because they where recognized as the column titles.
+
+The column containing the value **scale** for all it's entries is missing a value.
+
+The column names should be **Subject**, **Year**, and **Score**.
+
+```{r, load data, message=FALSE}
+happiness_data <- read_delim(
+  'dataset_happiness.csv',
+  delim=";",
+  show_col_types = FALSE,
+  skip = 4,
+  n_max = 6,
+  locale=locale(decimal_mark = ",")
+  ) |> glimpse()
+```
+
+# Task 2
+
+```{r}
+
+happiness_data_long <- happiness_data |>
+  pivot_longer(cols = `2013`:`2022`,
+               names_to = "Year",
+               values_to = "Score") |>
+  rename(c("...2"="ScoreType")) |>
+  glimpse()
+```
+
+# Task 3
+
+```{r}
+happiness_data_long |>
+  ggplot(aes(Year, Score, colour = Subject, group = Subject)) +
+  geom_path() +
+  ggtitle("Trend of happiness over years") +
+   theme_minimal()
+```
+
+# Task 4
+
+```{r}
+temp_data_wide <- read_delim(
+  'data_temp_wide.csv',
+  show_col_types = FALSE,
+  delim = ","
+  )
+
+head(temp_data_wide, 5)
+glimpse(temp_data_wide)
+```
+
+# Task 5
+
+```{r}
+temp_data_pivoted <- temp_data_wide |>
+  pivot_longer(
+    cols = city_lower:city_upper,                    # columns to make long 
+    names_to = c("ValueType"), # new column names for headers
+    names_prefix = "city_",
+    values_to = "Temp"                # new column name for values
+  )
+
+glimpse(temp_data_pivoted)
+```
+
+# Task 6
+
+```{r}
+temp_data_separated <- temp_data_pivoted |>
+  separate(col=`Temp`, into = c("City", "Temp"), sep = "_", convert = TRUE)
+
+glimpse(temp_data_separated)
+```
+
+
+
+
+
+
+
+
+
+
+
+
