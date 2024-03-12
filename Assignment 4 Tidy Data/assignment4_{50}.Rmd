@@ -110,6 +110,14 @@ temp_data_separated <- temp_data_pivoted |>
 glimpse(temp_data_separated)
 ```
 
+# Task 7
+```{r}
+
+temp_data_separated |>
+  ggplot(aes(x = `date [mm-dd]`, y = Temp, fill = City)) + 
+  geom_bar(stat = 'identity') + 
+  scale_x_continuous()
+```
 
 
 
