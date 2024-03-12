@@ -111,16 +111,56 @@ glimpse(temp_data_separated)
 ```
 
 # Task 7
-```{r}
 
-temp_data_separated |>
-  ggplot(aes(x = `date [mm-dd]`, y = Temp, fill = City)) + 
-  geom_bar(stat = 'identity') + 
-  scale_x_continuous()
+From the plots it can be seen that for all three cities Eindhoven, Rotterdam, and Vlieland the temperature is at its lowest from December to February. Eindhoven has both the coldest day in the winter and hottest day in the summer of the three cities. From the slope of the temperature, it can be seen that the temperature rises slower in the spring than it declines in the fall. Finally, in none of the cities the temperature is consistenly below 0 degrees in the winter.
+
+```{r, echo=FALSE}
+temp_data_separated$`date [mm-dd]` = as.Date(temp_data_separated$`date [mm-dd]`, "%m-%d")
+
+temp_data_separated_wider <- temp_data_separated |>
+  pivot_wider(
+    names_from = ValueType,
+    values_from = Temp,
+    names_sep = ""
+  )
+
+plot_eindhoven <- temp_data_separated_wider[temp_data_separated_wider$City == "Eindhoven",] |>
+  ggplot(aes(`date [mm-dd]`, mean, group = City)) +
+  geom_line(colour = "red") +
+  geom_ribbon(aes(x = `date [mm-dd]`, ymax = upper, ymin = lower), fill = "salmon", alpha = 0.4, colour = NA) +
+  scale_x_date(date_labels = "%b") +
+  theme(axis.title.x=element_blank()) +
+  ylim(0, 30) +
+  ylab("Temperature [°C]") +
+  labs(subtitle = "Eindhoven")
+
+plot_rotterdam <- temp_data_separated_wider[temp_data_separated_wider$City == "Rotterdam",] |>
+  ggplot(aes(`date [mm-dd]`, mean, group = City)) +
+  geom_line(colour = "blue") +
+  geom_ribbon(aes(x = `date [mm-dd]`, ymax = upper, ymin = lower), fill = "deepskyblue", alpha = 0.4, colour = NA) +
+  scale_x_date(date_labels = "%b") +
+  theme(axis.title.y=element_blank()) +
+  ylim(0, 30) +
+  xlab("Date") +
+  labs(subtitle = "Rotterdam")
+
+plot_vlieland <- temp_data_separated_wider[temp_data_separated_wider$City == "Vlieland",] |>
+  ggplot(aes(`date [mm-dd]`, mean, group = City)) +
+  geom_line(colour = "seagreen4") +
+  geom_ribbon(aes(x = `date [mm-dd]`, ymax = upper, ymin = lower), fill = "seagreen3", alpha = 0.4, colour = NA) +
+  scale_x_date(date_labels = "%b") +
+  ylim(0, 30) +
+  xlab("Date") +
+  ylab("Temperature [°C]") +
+  labs(subtitle = "Vlieland")
+
+plot_eindhoven + plot_rotterdam + plot_vlieland +
+  plot_layout(nrow = 2, width = c(1,1), guides = "collect") +
+  plot_annotation("Mean temperature over a year with minimum and maximum\nin Eindhoven, Rotterdam, and Vlieland.")
+
+
+
 ```
-
-
-
 
 
 
