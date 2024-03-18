@@ -1,0 +1,49 @@
+---
+title: "Assignment 5 - Data wrangling"
+subtitle: '2030071 - 1753320'
+author: "Group 50: Romée Simons and Tycho Brouwer"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#the needed packages are: 
+library(tidyverse)
+library(reprores)
+library(readxl)
+
+set.seed(30250) #makes sure random numbers are reproducible
+
+```
+
+# Task 1
+
+```{r, load data}
+data_raw <- read_xlsx("data.xlsx")
+```
+
+
+```{r, plot}
+data_raw$education <- as.factor(data_raw$education)
+
+data
+
+```
+
+
+
+
+
+
+
+
+
