@@ -37,9 +37,9 @@ Also, the decimal mark was correctly set by setting the locale using the **,** d
 
 The data for the **Subject**, the years, are in the character format because they where recognized as the column titles.
 
-The column containing the value **scale** for all it's entries is missing a value.
+The column containing the value **scale** for all it's entries is missing a column title.
 
-The column names should be **Subject**, **Year**, and **Score**.
+The column names should be **Subject**, **Year**, **Score**, and **ScoreType**.
 
 ```{r, load data, message=FALSE}
 happiness_data <- read_delim(
@@ -90,24 +90,27 @@ glimpse(temp_data_wide)
 # Task 5
 
 ```{r}
-temp_data_pivoted <- temp_data_wide |>
+temp_data_wide |>
   pivot_longer(
-    cols = city_lower:city_upper,                    # columns to make long 
-    names_to = c("ValueType"), # new column names for headers
+    cols = city_lower:city_upper,
+    names_to = c("ValueType"),
     names_prefix = "city_",
-    values_to = "Temp"                # new column name for values
-  )
-
-glimpse(temp_data_pivoted)
+    values_to = "Temp"
+  ) |> glimpse()
 ```
 
 # Task 6
 
 ```{r}
-temp_data_separated <- temp_data_pivoted |>
-  separate(col=`Temp`, into = c("City", "Temp"), sep = "_", convert = TRUE)
-
-glimpse(temp_data_separated)
+temp_data_separated <- temp_data_wide |>
+  pivot_longer(
+    cols = city_lower:city_upper,
+    names_to = c("ValueType"),
+    names_prefix = "city_",
+    values_to = "Temp"
+  ) |>
+  separate(col=`Temp`, into = c("City", "Temp"), sep = "_", convert = TRUE) |>
+  glimpse()
 ```
 
 # Task 7
@@ -157,9 +160,6 @@ plot_vlieland <- temp_data_separated_wider[temp_data_separated_wider$City == "Vl
 plot_eindhoven + plot_rotterdam + plot_vlieland +
   plot_layout(nrow = 2, width = c(1,1), guides = "collect") +
   plot_annotation("Mean temperature over a year with minimum and maximum\nin Eindhoven, Rotterdam, and Vlieland.")
-
-
-
 ```
 
 

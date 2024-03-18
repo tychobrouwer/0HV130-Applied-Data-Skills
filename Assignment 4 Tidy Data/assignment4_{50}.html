@@ -1521,9 +1521,10 @@ the <strong>,</strong> decimal mark.</p>
 <p>The data for the <strong>Subject</strong>, the years, are in the
 character format because they where recognized as the column titles.</p>
 <p>The column containing the value <strong>scale</strong> for all it’s
-entries is missing a value.</p>
+entries is missing a column title.</p>
 <p>The column names should be <strong>Subject</strong>,
-<strong>Year</strong>, and <strong>Score</strong>.</p>
+<strong>Year</strong>, <strong>Score</strong>, and
+<strong>ScoreType</strong>.</p>
 <pre class="r"><code>happiness_data &lt;- read_delim(
   &#39;dataset_happiness.csv&#39;,
   delim=&quot;;&quot;,
@@ -1598,15 +1599,13 @@ head(temp_data_wide, 5)</code></pre>
 </div>
 <div id="task-5" class="section level1">
 <h1>Task 5</h1>
-<pre class="r"><code>temp_data_pivoted &lt;- temp_data_wide |&gt;
+<pre class="r"><code>temp_data_wide |&gt;
   pivot_longer(
-    cols = city_lower:city_upper,                    # columns to make long 
-    names_to = c(&quot;ValueType&quot;), # new column names for headers
+    cols = city_lower:city_upper,
+    names_to = c(&quot;ValueType&quot;),
     names_prefix = &quot;city_&quot;,
-    values_to = &quot;Temp&quot;                # new column name for values
-  )
-
-glimpse(temp_data_pivoted)</code></pre>
+    values_to = &quot;Temp&quot;
+  ) |&gt; glimpse()</code></pre>
 <pre><code>## Rows: 3,294
 ## Columns: 3
 ## $ `date [mm-dd]` &lt;chr&gt; &quot;01-01&quot;, &quot;01-01&quot;, &quot;01-01&quot;, &quot;01-01&quot;, &quot;01-01&quot;, &quot;01-01&quot;, &quot;…
@@ -1615,10 +1614,15 @@ glimpse(temp_data_pivoted)</code></pre>
 </div>
 <div id="task-6" class="section level1">
 <h1>Task 6</h1>
-<pre class="r"><code>temp_data_separated &lt;- temp_data_pivoted |&gt;
-  separate(col=`Temp`, into = c(&quot;City&quot;, &quot;Temp&quot;), sep = &quot;_&quot;, convert = TRUE)
-
-glimpse(temp_data_separated)</code></pre>
+<pre class="r"><code>temp_data_separated &lt;- temp_data_wide |&gt;
+  pivot_longer(
+    cols = city_lower:city_upper,
+    names_to = c(&quot;ValueType&quot;),
+    names_prefix = &quot;city_&quot;,
+    values_to = &quot;Temp&quot;
+  ) |&gt;
+  separate(col=`Temp`, into = c(&quot;City&quot;, &quot;Temp&quot;), sep = &quot;_&quot;, convert = TRUE) |&gt;
+  glimpse()</code></pre>
 <pre><code>## Rows: 3,294
 ## Columns: 4
 ## $ `date [mm-dd]` &lt;chr&gt; &quot;01-01&quot;, &quot;01-01&quot;, &quot;01-01&quot;, &quot;01-01&quot;, &quot;01-01&quot;, &quot;01-01&quot;, &quot;…
