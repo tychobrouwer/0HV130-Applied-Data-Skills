@@ -16,9 +16,10 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-#the needed packages are: 
+#the needed packages are:
+library(knitr)
+library(kableExtra)
 library(tidyverse)
-library(reprores)
 library(readxl)
 
 set.seed(30250) #makes sure random numbers are reproducible
@@ -29,21 +30,75 @@ set.seed(30250) #makes sure random numbers are reproducible
 
 ```{r, load data}
 data_raw <- read_xlsx("data.xlsx")
+
+data_raw$education = as.factor(data_raw$education)
+data_raw$urban = as.factor(data_raw$urban)
+data_raw$gender = as.factor(data_raw$gender)
+data_raw$engnat = as.factor(data_raw$engnat)
+data_raw$hand = as.factor(data_raw$hand)
+data_raw$religion = as.factor(data_raw$religion)
+data_raw$orientation = as.factor(data_raw$orientation)
+data_raw$race = as.factor(data_raw$race)
+data_raw$voted = as.factor(data_raw$voted)
+data_raw$married = as.factor(data_raw$married)
 ```
 
 
 ```{r, plot}
-data_raw$education <- as.factor(data_raw$education)
+data_filtered = data_raw[!data_raw$VCL6 == 1, ]
+data_filtered = data_raw[!data_raw$VCL9 == 1, ]
+data_filtered = data_raw[!data_raw$VCL12 == 1, ]
 
-data
-
+data_filtered |>
+  mutate(VCL = VCL1 + VCL2 + VCL3 + VCL4 + VCL5 + VCL6 + VCL7 + VCL8 + VCL9 + VCL10 + VCL11 + VCL12 + VCL13 + VCL14 + VCL15 + VCL16) |>
+  mutate(`education level` = recode(education,
+                                    "0" = "No answer",
+                                    "1" = "Less than high school",
+                                    "2" = "High school",
+                                    "3" = "University degree",
+                                    "4" = "Graduate degree" )) |>
+  group_by(`education level`) |>
+  summarise(
+    `mean total VCL` = round(mean(VCL, na.rm = TRUE), 2),
+    `std total VCL`  = round(sd(VCL, na.rm = TRUE), 2),
+    `min total VCL`  = min(VCL, na.rm = TRUE),
+    `max total VCL`  = max(VCL, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  knitr::kable() |>
+  kable_styling()
 ```
 
+## Task 2
 
-
-
-
-
-
+```{r}
+data_filtered |>
+  mutate(Depression = Q3A + Q5A + Q10A + Q13A + Q16A + Q17A + Q21A + Q24A + Q26A + Q31A + Q34A + Q37A + Q38A + Q42A - 14) |>
+  mutate(Anxiety = Q2A + Q4A + Q7A + Q9A + Q15A + Q19A + Q20A + Q23A + Q25A + Q28A + Q30A + Q36A + Q40A + Q41A - 14) |>
+  mutate(Stress = Q1A + Q6A + Q8A + Q11A + Q12A + Q14A + Q18A + Q22A + Q27A + Q29A + Q32A + Q33A + Q35A + Q39A -14) |>
+  filter(
+    education == 2 & urban == 1 | education == 4 & urban == 3
+  ) |>
+  mutate(`education level` = recode(education,
+                                    "0" = "No answer",
+                                    "1" = "Less than high school",
+                                    "2" = "High school",
+                                    "3" = "University degree",
+                                    "4" = "Graduate degree" )) |>
+  mutate(`environment` = recode(urban,
+                                "0" = "No answer",
+                                "1" = "Rural (country side)",
+                                "2" = "Suburban",
+                                "3" = "Urban (town, city)" )) |>
+  group_by(`education level`, `environment`) |>
+  summarise(
+    `mean depression score` = round(mean(Depression, na.rm = TRUE), 2),
+    `mean anxiety score` = round(mean(Anxiety, na.rm = TRUE), 2),
+    `mean stress score` = round(mean(Stress, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) |>
+  knitr::kable() |>
+  kable_styling()
+```
 
 
