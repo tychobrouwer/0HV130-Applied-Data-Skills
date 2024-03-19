@@ -31,16 +31,6 @@ set.seed(30250) #makes sure random numbers are reproducible
 ```{r, load data}
 data_raw <- read_xlsx("data.xlsx")
 
-data_raw$education = as.factor(data_raw$education)
-data_raw$urban = as.factor(data_raw$urban)
-data_raw$gender = as.factor(data_raw$gender)
-data_raw$engnat = as.factor(data_raw$engnat)
-data_raw$hand = as.factor(data_raw$hand)
-data_raw$religion = as.factor(data_raw$religion)
-data_raw$orientation = as.factor(data_raw$orientation)
-data_raw$race = as.factor(data_raw$race)
-data_raw$voted = as.factor(data_raw$voted)
-data_raw$married = as.factor(data_raw$married)
 ```
 
 
@@ -48,28 +38,29 @@ data_raw$married = as.factor(data_raw$married)
 data_filtered = data_raw[!data_raw$VCL6 == 1, ]
 data_filtered = data_raw[!data_raw$VCL9 == 1, ]
 data_filtered = data_raw[!data_raw$VCL12 == 1, ]
+data_filtered$education = as.factor(data_filtered$education)
 
 data_filtered |>
   mutate(VCL = VCL1 + VCL2 + VCL3 + VCL4 + VCL5 + VCL6 + VCL7 + VCL8 + VCL9 + VCL10 + VCL11 + VCL12 + VCL13 + VCL14 + VCL15 + VCL16) |>
-  mutate(`education level` = recode(education,
+  mutate(`Education Level` = recode(education,
                                     "0" = "No answer",
                                     "1" = "Less than high school",
                                     "2" = "High school",
                                     "3" = "University degree",
                                     "4" = "Graduate degree" )) |>
-  group_by(`education level`) |>
+  group_by(`Education Level`) |>
   summarise(
-    `mean total VCL` = round(mean(VCL, na.rm = TRUE), 2),
-    `std total VCL`  = round(sd(VCL, na.rm = TRUE), 2),
-    `min total VCL`  = min(VCL, na.rm = TRUE),
-    `max total VCL`  = max(VCL, na.rm = TRUE),
+    Observations = n(),
+    `Average Number of Words` = round(mean(VCL, na.rm = TRUE), 2),
+    `SD`  = round(sd(VCL, na.rm = TRUE), 2),
     .groups = "drop"
   ) |>
-  knitr::kable() |>
-  kable_styling()
+  knitr::kable(caption = "The average number of known words for different education levels") |>
+  kable_classic() |>
+  kable_styling(full_width = FALSE, font_size = 20) 
 ```
 
-## Task 2
+# Task 2
 
 ```{r}
 data_filtered |>
@@ -79,60 +70,55 @@ data_filtered |>
   filter(
     education == 2 & urban == 1 | education == 4 & urban == 3
   ) |>
-  mutate(`education level` = recode(education,
+  mutate(`Education Level` = recode(education,
                                     "0" = "No answer",
                                     "1" = "Less than high school",
                                     "2" = "High school",
                                     "3" = "University degree",
                                     "4" = "Graduate degree" )) |>
-  mutate(`environment` = recode(urban,
+  mutate(`Environment` = recode(urban,
                                 "0" = "No answer",
-                                "1" = "Rural (country side)",
+                                "1" = "Rural",
                                 "2" = "Suburban",
-                                "3" = "Urban (town, city)" )) |>
-  group_by(`education level`, `environment`) |>
+                                "3" = "Urban" )) |>
+  group_by(`Education Level`, `Environment`) |>
   summarise(
-    `mean depression score` = round(mean(Depression, na.rm = TRUE), 2),
-    `mean anxiety score` = round(mean(Anxiety, na.rm = TRUE), 2),
-    `mean stress score` = round(mean(Stress, na.rm = TRUE), 2),
+    Observations = n(),
+    `Average Depression Score` = round(mean(Depression, na.rm = TRUE), 2),
+    `Average Anxiety Score` = round(mean(Anxiety, na.rm = TRUE), 2),
+    `Average Stress Score` = round(mean(Stress, na.rm = TRUE), 2),
     .groups = "drop"
   ) |>
-  knitr::kable() |>
-  kable_styling()
+  knitr::kable(caption = "Comparision between urban people with a graduate degree and rural people with a high school level degree") |>
+  kable_classic() |>
+  kable_styling(full_width = FALSE, font_size = 20) 
 ```
 
-## Task 3
+# Task 3
 
 ```{r}
-r1<-str_detect(AD1$major, "gine")
+r1<-str_detect(data_filtered$major, "gine")
 r<-as.numeric(r1)
-AD <- bind_cols(AD1, r)
-```
 
-```{r}
-AD <-AD |> rename(engineer=...174)
-```
+data_raw <- bind_cols(data_filtered, r)
+data_raw <- data_raw |> rename(engineer=...173)
 
-```{r}
-table(AD$hand)
-
-summary(AD$hand)
-
-AD$hand <- case_match(
-  AD$hand,
+data_raw$hand <- case_match(
+  data_raw$hand,
   1 ~ 0,
   2 ~ 1,
   3 ~ 0,
   .default = NA
 )
-AD$engineer <- case_match(
-  AD$engineer,
+
+data_raw$engineer <- case_match(
+  data_raw$engineer,
   0 ~ "other major",
   1 ~ "engineer",
   NA ~ "no major"
 )
 
-lefthand <- AD |>
+lefthand <- data_raw |>
   group_by(engineer) |>
   summarise(
     n = n(),
@@ -142,31 +128,31 @@ lefthand <- AD |>
 
 kable(lefthand, 
       digits = 2, 
-      col.names = c("engineer", "nr", "proportion"),
-      caption = "A comparision of urban and rural graduates") |>
+      col.names = c("Engineer", "Number", "Proportion"),
+      caption = "A comparision of left-handedness of engineers and non-engineers") |>
   kable_classic() |>
   kable_styling(full_width = FALSE, font_size = 20) 
 ```
 
-## Task 4
+# Task 4
 
 ```{r}
-AD <- AD  %>% 
-  mutate(total = introelapse+ testelapse +surveyelapse)
+data_raw <- data_raw  |>
+  mutate(total_time = introelapse + testelapse + surveyelapse)
 
-summ_total <- AD |>
+summ_total <- data_raw |>
   group_by(country) |>
   summarise(
-    n = n(),
-    avg_time = mean(total, na.rm = TRUE),
+    observations = n(),
+    avg_time = mean(total_time, na.rm = TRUE),
     .groups = "drop"
-  )
+  ) |>
+  filter(observations > 100) |>
+  filter(observations > 100 & avg_time == max(avg_time))
 
-summ_total <- summ_total |> filter(n>100)
-
-summ_total <- summ_total |> filter(n>100&avg_time == max(avg_time))
-#summ_total <- summ_total |> filter(avg_time == max(avg_time))
-kable(summ_total)
+kable(summ_total, col.names = c("Country", "Observations", "Average Time")) |>
+  kable_classic() |>
+  kable_styling(full_width = FALSE, font_size = 20)
 ```
 
 
