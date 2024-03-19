@@ -11,7 +11,7 @@
 
 <meta name="author" content="Group 50: Romée Simons and Tycho Brouwer" />
 
-<meta name="date" content="2024-03-18" />
+<meta name="date" content="2024-03-19" />
 
 <title>Assignment 5 - Data wrangling</title>
 
@@ -1730,7 +1730,7 @@ font-size: 0.95em;
 <h1 class="title toc-ignore">Assignment 5 - Data wrangling</h1>
 <h3 class="subtitle">2030071 - 1753320</h3>
 <h4 class="author">Group 50: Romée Simons and Tycho Brouwer</h4>
-<h4 class="date">2024-03-18</h4>
+<h4 class="date">2024-03-19</h4>
 
 </div>
 
@@ -1755,7 +1755,12 @@ data_filtered = data_raw[!data_raw$VCL12 == 1, ]
 
 data_filtered |&gt;
   mutate(VCL = VCL1 + VCL2 + VCL3 + VCL4 + VCL5 + VCL6 + VCL7 + VCL8 + VCL9 + VCL10 + VCL11 + VCL12 + VCL13 + VCL14 + VCL15 + VCL16) |&gt;
-  mutate(`education level` = recode(education, &quot;0&quot; = &quot;No answer&quot;, &quot;1&quot; = &quot;Less than high school&quot;, &quot;2&quot; = &quot;High school&quot;, &quot;3&quot; = &quot;University degree&quot;, &quot;4&quot; = &quot;Graduate degree&quot; )) |&gt;
+  mutate(`education level` = recode(education,
+                                    &quot;0&quot; = &quot;No answer&quot;,
+                                    &quot;1&quot; = &quot;Less than high school&quot;,
+                                    &quot;2&quot; = &quot;High school&quot;,
+                                    &quot;3&quot; = &quot;University degree&quot;,
+                                    &quot;4&quot; = &quot;Graduate degree&quot; )) |&gt;
   group_by(`education level`) |&gt;
   summarise(
     `mean total VCL` = round(mean(VCL, na.rm = TRUE), 2),
@@ -1876,9 +1881,99 @@ Graduate degree
 </table>
 <div id="task-2" class="section level2">
 <h2>Task 2</h2>
-<p>data_filtered |&gt; filter( education = 2, education = 4, urban = 1,
-urban = 3 ) |&gt; group_by(education, urban) |&gt; summarise( =
-mean(mean, na.rm = TRUE), .groups = “drop” )</p>
+<pre class="r"><code>data_filtered |&gt;
+  mutate(Depression = Q3A + Q5A + Q10A + Q13A + Q16A + Q17A + Q21A + Q24A + Q26A + Q31A + Q34A + Q37A + Q38A + Q42A - 14) |&gt;
+  mutate(Anxiety = Q2A + Q4A + Q7A + Q9A + Q15A + Q19A + Q20A + Q23A + Q25A + Q28A + Q30A + Q36A + Q40A + Q41A - 14) |&gt;
+  mutate(Stress = Q1A + Q6A + Q8A + Q11A + Q12A + Q14A + Q18A + Q22A + Q27A + Q29A + Q32A + Q33A + Q35A + Q39A -14) |&gt;
+  filter(
+    education == 2 &amp; urban == 1 | education == 4 &amp; urban == 3
+  ) |&gt;
+  mutate(`education level` = recode(education,
+                                    &quot;0&quot; = &quot;No answer&quot;,
+                                    &quot;1&quot; = &quot;Less than high school&quot;,
+                                    &quot;2&quot; = &quot;High school&quot;,
+                                    &quot;3&quot; = &quot;University degree&quot;,
+                                    &quot;4&quot; = &quot;Graduate degree&quot; )) |&gt;
+  mutate(`environment` = recode(urban,
+                                &quot;0&quot; = &quot;No answer&quot;,
+                                &quot;1&quot; = &quot;Rural (country side)&quot;,
+                                &quot;2&quot; = &quot;Suburban&quot;,
+                                &quot;3&quot; = &quot;Urban (town, city)&quot; )) |&gt;
+  group_by(`education level`, `environment`) |&gt;
+  summarise(
+    `mean depression score` = round(mean(Depression, na.rm = TRUE), 2),
+    `mean anxiety score` = round(mean(Anxiety, na.rm = TRUE), 2),
+    `mean stress score` = round(mean(Stress, na.rm = TRUE), 2),
+    .groups = &quot;drop&quot;
+  ) |&gt;
+  knitr::kable() |&gt;
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+education level
+</th>
+<th style="text-align:left;">
+environment
+</th>
+<th style="text-align:right;">
+mean depression score
+</th>
+<th style="text-align:right;">
+mean anxiety score
+</th>
+<th style="text-align:right;">
+mean stress score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+High school
+</td>
+<td style="text-align:left;">
+Rural (country side)
+</td>
+<td style="text-align:right;">
+21.94
+</td>
+<td style="text-align:right;">
+17.02
+</td>
+<td style="text-align:right;">
+21.93
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Graduate degree
+</td>
+<td style="text-align:left;">
+Urban (town, city)
+</td>
+<td style="text-align:right;">
+18.24
+</td>
+<td style="text-align:right;">
+13.29
+</td>
+<td style="text-align:right;">
+18.94
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="task-3" class="section level2">
+<h2>Task 3</h2>
+</div>
+<div id="task-4" class="section level2">
+<h2>Task 4</h2>
+</div>
+<div id="task-5" class="section level2">
+<h2>Task 5</h2>
 </div>
 </div>
 
