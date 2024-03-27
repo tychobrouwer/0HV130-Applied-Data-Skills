@@ -27,18 +27,23 @@ set.seed(9)
 # Question 1
 ## Part 1
 ```{r}
+
+Q1_1 <- 
+  
 simulate_normal <- function(sample_size){
   samples <- rnorm(sample_size, mean = 0, sd = 1)
   sample_mean <- mean(samples)
   diff <- abs(sample_mean)
   return(diff)
 }
-sample_sizes <- seq(10, 1000, by = 5)
-differences <- sapply(sample_sizes, simulate_normal)
+n <- seq(10, 1000, by = 5)
+diff <- sapply(n, simulate_normal)
+Q1_1 <- rbind(n, diff)
 
 scatterplot <- ggplot() + 
-  geom_point(aes(x = sample_sizes, y = differences), color = 'blue', alpha = 0.5)+
-  labs(x = 'Sample size', y = 'Absolute difference', title = 'Correlation between sample size and absolute difference')
+  geom_point(aes(x = `n`, y = `diff`), color = 'blue', alpha = 0.5)+
+  geom_hline(yintercept = 0, color = 'red') +
+  labs(x = 'Sample size', y = 'Absolute difference', title = 'Correlation between sample size and absolute difference') 
 
 print(scatterplot)
 
