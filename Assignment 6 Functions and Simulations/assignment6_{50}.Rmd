@@ -1,0 +1,51 @@
+---
+title: "Assignment 6 - Functions and simulations"
+subtitle: '2030071 - 1753320'
+author: "Group 50: Romée Simons and Tycho Brouwer"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#the needed packages are: 
+library(tidyverse)
+library(faux)
+library(ggplot2)
+
+set.seed(9)
+```
+
+# Question 1
+## Part 1
+```{r}
+simulate_normal <- function(sample_size){
+  samples <- rnorm(sample_size, mean = 0, sd = 1)
+  sample_mean <- mean(samples)
+  diff <- abs(sample_mean)
+  return(diff)
+}
+sample_sizes <- seq(10, 1000, by = 5)
+differences <- sapply(sample_sizes, simulate_normal)
+
+scatterplot <- ggplot() + 
+  geom_point(aes(x = sample_sizes, y = differences), color = 'blue', alpha = 0.5)+
+  labs(x = 'Sample size', y = 'Absolute difference', title = 'Correlation between sample size and absolute difference')
+
+print(scatterplot)
+
+```
+
+## Part 2
+```{r}
+
+```
+

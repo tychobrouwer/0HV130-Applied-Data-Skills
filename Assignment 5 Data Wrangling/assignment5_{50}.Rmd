@@ -104,13 +104,13 @@ data_filtered |>
 ## Task 3
 
 ```{r}
-r1<-str_detect(AD1$major, "gine")
+r1<-str_detect(data_filtered$major, "gine")
 r<-as.numeric(r1)
-AD <- bind_cols(AD1, r)
+AD <- bind_cols(data_filtered, r)
 ```
 
 ```{r}
-AD <-AD |> rename(engineer=...174)
+#AD <-AD |> rename(engineer=...174)
 ```
 
 ```{r}
@@ -118,19 +118,19 @@ table(AD$hand)
 
 summary(AD$hand)
 
-AD$hand <- case_match(
-  AD$hand,
-  1 ~ 0,
-  2 ~ 1,
-  3 ~ 0,
-  .default = NA
-)
-AD$engineer <- case_match(
-  AD$engineer,
-  0 ~ "other major",
-  1 ~ "engineer",
-  NA ~ "no major"
-)
+#AD$hand <- case_match(
+  #AD$hand,
+  #1 ~ 0,
+  #2 ~ 1,
+  #3 ~ 0,
+  #.default = NA
+#)
+#AD$engineer <- case_match(
+  #AD$engineer,
+  #0 ~ "other major",
+  #1 ~ "engineer",
+  #NA ~ "no major"
+#)
 
 lefthand <- AD |>
   group_by(engineer) |>
