@@ -1663,7 +1663,7 @@ print(Q3_2)</code></pre>
 ##  0.00  0.44</code></pre>
 <pre class="r"><code>density_plot &lt;- ggplot() + 
   geom_density(aes(Q3_1), color= &#39;blue&#39;, fill = &#39;lightblue&#39;, alpha = 0.5) + 
-  geom_hline(yintercept = Q3_2, color = &#39;red&#39;) +
+  geom_vline(xintercept = Q3_2, color = &#39;red&#39;) +
   labs(x = &#39;Nr of observations&#39;, y = &#39;Density&#39;, title = &#39;Density plot with quantile lines&#39;)
 
 #not sure if the plot is correct 
