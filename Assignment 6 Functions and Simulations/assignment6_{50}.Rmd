@@ -38,10 +38,11 @@ simulate_normal <- function(sample_size){
 }
 n <- seq(10, 1000, by = 5)
 diff <- sapply(n, simulate_normal)
-Q1_1 <- rbind(n, diff) #not correct yet
+Q1_1 <- data.frame(col1 = n, 
+                   col2 = diff)
 
 scatterplot <- ggplot() + 
-  geom_point(aes(x = `n`, y = `diff`), color = 'blue', alpha = 0.5)+
+  geom_point(aes(x = Q1_1$col1, y = Q1_1$col2), color = 'blue', alpha = 0.5) +
   geom_hline(yintercept = 0, color = 'red') +
   labs(x = 'Sample size', y = 'Absolute difference', title = 'Correlation between sample size and absolute difference') 
 
@@ -52,10 +53,31 @@ print(scatterplot)
 ## Part 2
 ```{r}
 
+diff_squared <- (Q1_1$col2)^2
+  
+scatterplot2 <- ggplot() + 
+  geom_point(aes(x = Q1_1$col1[1:39], y = diff_squared[1:39]), color = 'blue', alpha = 0.5) + 
+  geom_hline(yintercept = 0, color = 'red') +
+  labs(x = 'Sample size', y = 'Absolute difference squared', title = 'Correlation between sample size and absolute difference')
+
+print(scatterplot2)
+
 ```
 
 ## Part 3
 ```{r}
+simulate_normal2 <- function(sample_size) {
+  samples <- rnorm(sample_size, mean = 0, sd = 1)
+  sample_mean <- mean(samples)
+  diff_squared <- (abs(sample_mean))^2
+  return(diff_squared)
+}
 
+n <- seq(10, 200, by = 5)
+mean_diff_squared <- sapply(n, simulate_normal2)
+
+print(mean_diff_squared)
 ```
 
+# Question 2
+## Part 1
