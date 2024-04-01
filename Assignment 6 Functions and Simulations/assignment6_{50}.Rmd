@@ -168,7 +168,7 @@ print(Q3_2)
 
 density_plot <- ggplot() + 
   geom_density(aes(Q3_1), color= 'blue', fill = 'lightblue', alpha = 0.5) + 
-  geom_hline(yintercept = Q3_2, color = 'red') +
+  geom_vline(xintercept = Q3_2, color = 'red') +
   labs(x = 'Nr of observations', y = 'Density', title = 'Density plot with quantile lines')
 
 #not sure if the plot is correct 
