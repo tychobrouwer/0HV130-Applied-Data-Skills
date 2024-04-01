@@ -38,7 +38,7 @@ simulate_normal <- function(sample_size){
 }
 n <- seq(10, 1000, by = 5)
 diff <- sapply(n, simulate_normal)
-Q1_1 <- rbind(n, diff)
+Q1_1 <- rbind(n, diff) #not correct yet
 
 scatterplot <- ggplot() + 
   geom_point(aes(x = `n`, y = `diff`), color = 'blue', alpha = 0.5)+
@@ -50,6 +50,11 @@ print(scatterplot)
 ```
 
 ## Part 2
+```{r}
+
+```
+
+## Part 3
 ```{r}
 
 ```

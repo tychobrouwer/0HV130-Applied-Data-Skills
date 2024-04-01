@@ -11,7 +11,7 @@
 
 <meta name="author" content="Group 50: Romée Simons and Tycho Brouwer" />
 
-<meta name="date" content="2024-03-27" />
+<meta name="date" content="2024-04-01" />
 
 <title>Assignment 6 - Functions and simulations</title>
 
@@ -1507,7 +1507,7 @@ font-size: 0.95em;
 simulations</h1>
 <h3 class="subtitle">2030071 - 1753320</h3>
 <h4 class="author">Group 50: Romée Simons and Tycho Brouwer</h4>
-<h4 class="date">2024-03-27</h4>
+<h4 class="date">2024-04-01</h4>
 
 </div>
 
@@ -1526,7 +1526,7 @@ simulate_normal &lt;- function(sample_size){
 }
 n &lt;- seq(10, 1000, by = 5)
 diff &lt;- sapply(n, simulate_normal)
-Q1_1 &lt;- rbind(n, diff)
+Q1_1 &lt;- rbind(n, diff) #not correct yet
 
 scatterplot &lt;- ggplot() + 
   geom_point(aes(x = `n`, y = `diff`), color = &#39;blue&#39;, alpha = 0.5)+
@@ -1538,6 +1538,9 @@ print(scatterplot)</code></pre>
 </div>
 <div id="part-2" class="section level2">
 <h2>Part 2</h2>
+</div>
+<div id="part-3" class="section level2">
+<h2>Part 3</h2>
 </div>
 </div>
 
