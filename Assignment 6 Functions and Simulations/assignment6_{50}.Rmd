@@ -27,8 +27,6 @@ set.seed(9)
 # Question 1
 ## Part 1
 ```{r}
-
-Q1_1 <- 
   
 simulate_normal <- function(sample_size){
   samples <- rnorm(sample_size, mean = 0, sd = 1)
@@ -55,29 +53,128 @@ print(scatterplot)
 
 diff_squared <- (Q1_1$col2)^2
   
-scatterplot2 <- ggplot() + 
-  geom_point(aes(x = Q1_1$col1[1:39], y = diff_squared[1:39]), color = 'blue', alpha = 0.5) + 
+scatterplot_2 <- ggplot() + 
+  geom_point(aes(x = Q1_1$col1[1:39], y = diff_squared[1:39]), color = 'blue', alpha = 0.5) +
   geom_hline(yintercept = 0, color = 'red') +
-  labs(x = 'Sample size', y = 'Absolute difference squared', title = 'Correlation between sample size and absolute difference')
+  labs(x = 'Sample size', y = 'Absolute difference squared', title = 'Correlation between sample size and squared absolute difference')
 
-print(scatterplot2)
+print(scatterplot_2)
 
 ```
 
 ## Part 3
 ```{r}
 simulate_normal2 <- function(sample_size) {
-  samples <- rnorm(sample_size, mean = 0, sd = 1)
-  sample_mean <- mean(samples)
-  diff_squared <- (abs(sample_mean))^2
-  return(diff_squared)
+  diff <- replicate(1000, abs(mean(rnorm(sample_size, mean = 0, sd = 1))))
+  diff_squared <- diff^2
+  mean_diff_squared <- mean(diff_squared)
+  return(mean_diff_squared)
 }
 
 n <- seq(10, 200, by = 5)
-mean_diff_squared <- sapply(n, simulate_normal2)
+m_diff <- sapply(n, simulate_normal2)
+Q1_2 <- data.frame(col1 = n, 
+                   col2 = m_diff)
 
-print(mean_diff_squared)
+scatterplot_3 <- ggplot() +
+  geom_point(aes(x = Q1_2$col1, y = Q1_2$col2), color = 'blue', alpha = 0.5) +
+  geom_hline(yintercept = 0, color = 'red') +
+  labs(x = 'Sample size', y = 'Mean of absolute difference squared', title = 'Correlation between sample size and mean absolute difference')
+
+print(scatterplot_3)
 ```
 
 # Question 2
+## Part 1
+```{r}
+Q2_1 <- rpois(n = 100000, lambda = 1)
+
+density_plot <- ggplot() + 
+  geom_density(aes(Q2_1), color = 'blue', fill = 'lightblue', alpha = 0.5) +
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot of Poisson distribution')
+
+Q2_2 <- rpois(n = 100000, lambda = 5)
+
+density_plot2 <- ggplot() + 
+  geom_density(aes(Q2_2), color = 'red', fill = 'salmon', alpha = 0.5) +
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot of Poisson distribution')
+
+Q2_3 <- rpois(n = 100000, lambda = 15)
+
+density_plot3 <- ggplot() +
+  geom_density(aes(Q2_3), color = 'green', fill = 'palegreen', alpha = 0.5) +
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot of Poisson distribution')
+
+Q2_4 <- rpois(n = 100000, lambda = 150)
+
+density_plot4 <- ggplot() +
+  geom_density(aes(Q2_4), color = 'purple', fill = 'magenta', alpha = 0.5) +
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot of Poisson distribution')
+
+print(density_plot)
+print(density_plot2)
+print(density_plot3)
+print(density_plot4)
+```
+
+## Part 2
+```{r}
+Q2_5 <- rbinom(n = 100000, size = 1, prob = 0.5)
+
+density_plot <- ggplot() + 
+  geom_density(aes(Q2_5), color = 'blue', fill = 'lightblue', alpha = 0.5) + 
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot of binomial distribution')
+
+Q2_6 <- rbinom(n = 100000, size = 5, prob = 0.5)
+
+density_plot2 <- ggplot() + 
+  geom_density(aes(Q2_6), color = 'red', fill = 'salmon', alpha = 0.5) + 
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot of binomial distribution')
+
+Q2_7 <- rbinom(n = 100000, size = 15, prob = 0.5)
+
+density_plot3 <- ggplot() + 
+  geom_density(aes(Q2_7), color = 'green', fill = 'palegreen', alpha = 0.5) + 
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot of binomial distribution')
+
+Q2_8 <- rbinom(n = 100000, size = 150, prob = 0.5)
+
+density_plot4 <- ggplot() + 
+  geom_density(aes(Q2_8), color = 'purple', fill = 'magenta', alpha = 0.5) + 
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot of binomial distribution')
+
+print(density_plot)
+print(density_plot2)
+print(density_plot3)
+print(density_plot4)
+```
+
+# Question 3
+## Part 1
+```{r}
+simulate_sample <- function(sample_size, l) {
+  sample <- rpois(n = sample_size, lambda = l)
+  mean <- mean(sample)
+  return(mean)
+}
+
+Q3_1 <- replicate(100000, abs(simulate_sample(50,1)- simulate_sample(50,1)))
+```
+
+## Part 2
+```{r}
+Q3_2 <- quantile(Q3_1, c(0.025,0.975))
+print(Q3_2)
+
+density_plot <- ggplot() + 
+  geom_density(aes(Q3_1), color= 'blue', fill = 'lightblue', alpha = 0.5) + 
+  geom_hline(yintercept = Q3_2, color = 'red') +
+  labs(x = 'Nr of observations', y = 'Density', title = 'Density plot with quantile lines')
+
+#not sure if the plot is correct 
+
+print(density_plot)
+```
+
+# Question 4
 ## Part 1
