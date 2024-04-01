@@ -1737,57 +1737,47 @@ font-size: 0.95em;
 
 <div id="task-1" class="section level1">
 <h1>Task 1</h1>
-<pre class="r"><code>data_raw &lt;- read_xlsx(&quot;data.xlsx&quot;)
-
-data_raw$education = as.factor(data_raw$education)
-data_raw$urban = as.factor(data_raw$urban)
-data_raw$gender = as.factor(data_raw$gender)
-data_raw$engnat = as.factor(data_raw$engnat)
-data_raw$hand = as.factor(data_raw$hand)
-data_raw$religion = as.factor(data_raw$religion)
-data_raw$orientation = as.factor(data_raw$orientation)
-data_raw$race = as.factor(data_raw$race)
-data_raw$voted = as.factor(data_raw$voted)
-data_raw$married = as.factor(data_raw$married)</code></pre>
+<pre class="r"><code>data_raw &lt;- read_xlsx(&quot;data.xlsx&quot;)</code></pre>
 <pre class="r"><code>data_filtered = data_raw[!data_raw$VCL6 == 1, ]
 data_filtered = data_raw[!data_raw$VCL9 == 1, ]
 data_filtered = data_raw[!data_raw$VCL12 == 1, ]
+data_filtered$education = as.factor(data_filtered$education)
 
 data_filtered |&gt;
   mutate(VCL = VCL1 + VCL2 + VCL3 + VCL4 + VCL5 + VCL6 + VCL7 + VCL8 + VCL9 + VCL10 + VCL11 + VCL12 + VCL13 + VCL14 + VCL15 + VCL16) |&gt;
-  mutate(`education level` = recode(education,
+  mutate(`Education Level` = recode(education,
                                     &quot;0&quot; = &quot;No answer&quot;,
                                     &quot;1&quot; = &quot;Less than high school&quot;,
                                     &quot;2&quot; = &quot;High school&quot;,
                                     &quot;3&quot; = &quot;University degree&quot;,
                                     &quot;4&quot; = &quot;Graduate degree&quot; )) |&gt;
-  group_by(`education level`) |&gt;
+  group_by(`Education Level`) |&gt;
   summarise(
-    `mean total VCL` = round(mean(VCL, na.rm = TRUE), 2),
-    `std total VCL`  = round(sd(VCL, na.rm = TRUE), 2),
-    `min total VCL`  = min(VCL, na.rm = TRUE),
-    `max total VCL`  = max(VCL, na.rm = TRUE),
+    Observations = n(),
+    `Average Number of Words` = round(mean(VCL, na.rm = TRUE), 2),
+    `SD`  = round(sd(VCL, na.rm = TRUE), 2),
     .groups = &quot;drop&quot;
   ) |&gt;
-  knitr::kable() |&gt;
-  kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
+  knitr::kable(caption = &quot;The average number of known words for different education levels&quot;) |&gt;
+  kable_classic() |&gt;
+  kable_styling(full_width = FALSE, font_size = 20) </code></pre>
+<table class=" lightable-classic table" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; font-size: 20px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+The average number of known words for different education levels
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
-education level
+Education Level
 </th>
 <th style="text-align:right;">
-mean total VCL
+Observations
 </th>
 <th style="text-align:right;">
-std total VCL
+Average Number of Words
 </th>
 <th style="text-align:right;">
-min total VCL
-</th>
-<th style="text-align:right;">
-max total VCL
+SD
 </th>
 </tr>
 </thead>
@@ -1797,16 +1787,13 @@ max total VCL
 No answer
 </td>
 <td style="text-align:right;">
+459
+</td>
+<td style="text-align:right;">
 6.60
 </td>
 <td style="text-align:right;">
 2.96
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-14
 </td>
 </tr>
 <tr>
@@ -1814,16 +1801,13 @@ No answer
 Less than high school
 </td>
 <td style="text-align:right;">
+3594
+</td>
+<td style="text-align:right;">
 7.27
 </td>
 <td style="text-align:right;">
 2.45
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-14
 </td>
 </tr>
 <tr>
@@ -1831,16 +1815,13 @@ Less than high school
 High school
 </td>
 <td style="text-align:right;">
+13822
+</td>
+<td style="text-align:right;">
 6.75
 </td>
 <td style="text-align:right;">
 2.75
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-14
 </td>
 </tr>
 <tr>
@@ -1848,16 +1829,13 @@ High school
 University degree
 </td>
 <td style="text-align:right;">
+13958
+</td>
+<td style="text-align:right;">
 6.56
 </td>
 <td style="text-align:right;">
 2.82
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-15
 </td>
 </tr>
 <tr>
@@ -1865,22 +1843,20 @@ University degree
 Graduate degree
 </td>
 <td style="text-align:right;">
+4590
+</td>
+<td style="text-align:right;">
 7.12
 </td>
 <td style="text-align:right;">
 3.12
 </td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-14
-</td>
 </tr>
 </tbody>
 </table>
-<div id="task-2" class="section level2">
-<h2>Task 2</h2>
+</div>
+<div id="task-2" class="section level1">
+<h1>Task 2</h1>
 <pre class="r"><code>data_filtered |&gt;
   mutate(Depression = Q3A + Q5A + Q10A + Q13A + Q16A + Q17A + Q21A + Q24A + Q26A + Q31A + Q34A + Q37A + Q38A + Q42A - 14) |&gt;
   mutate(Anxiety = Q2A + Q4A + Q7A + Q9A + Q15A + Q19A + Q20A + Q23A + Q25A + Q28A + Q30A + Q36A + Q40A + Q41A - 14) |&gt;
@@ -1888,43 +1864,52 @@ Graduate degree
   filter(
     education == 2 &amp; urban == 1 | education == 4 &amp; urban == 3
   ) |&gt;
-  mutate(`education level` = recode(education,
+  mutate(`Education Level` = recode(education,
                                     &quot;0&quot; = &quot;No answer&quot;,
                                     &quot;1&quot; = &quot;Less than high school&quot;,
                                     &quot;2&quot; = &quot;High school&quot;,
                                     &quot;3&quot; = &quot;University degree&quot;,
                                     &quot;4&quot; = &quot;Graduate degree&quot; )) |&gt;
-  mutate(`environment` = recode(urban,
+  mutate(`Environment` = recode(urban,
                                 &quot;0&quot; = &quot;No answer&quot;,
-                                &quot;1&quot; = &quot;Rural (country side)&quot;,
+                                &quot;1&quot; = &quot;Rural&quot;,
                                 &quot;2&quot; = &quot;Suburban&quot;,
-                                &quot;3&quot; = &quot;Urban (town, city)&quot; )) |&gt;
-  group_by(`education level`, `environment`) |&gt;
+                                &quot;3&quot; = &quot;Urban&quot; )) |&gt;
+  group_by(`Education Level`, `Environment`) |&gt;
   summarise(
-    `mean depression score` = round(mean(Depression, na.rm = TRUE), 2),
-    `mean anxiety score` = round(mean(Anxiety, na.rm = TRUE), 2),
-    `mean stress score` = round(mean(Stress, na.rm = TRUE), 2),
+    Observations = n(),
+    `Average Depression Score` = round(mean(Depression, na.rm = TRUE), 2),
+    `Average Anxiety Score` = round(mean(Anxiety, na.rm = TRUE), 2),
+    `Average Stress Score` = round(mean(Stress, na.rm = TRUE), 2),
     .groups = &quot;drop&quot;
   ) |&gt;
-  knitr::kable() |&gt;
-  kable_styling()</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
+  knitr::kable(caption = &quot;Comparision between urban people with a graduate degree and rural people with a high school level degree&quot;) |&gt;
+  kable_classic() |&gt;
+  kable_styling(full_width = FALSE, font_size = 20) </code></pre>
+<table class=" lightable-classic table" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; font-size: 20px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Comparision between urban people with a graduate degree and rural people
+with a high school level degree
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
-education level
+Education Level
 </th>
 <th style="text-align:left;">
-environment
+Environment
 </th>
 <th style="text-align:right;">
-mean depression score
+Observations
 </th>
 <th style="text-align:right;">
-mean anxiety score
+Average Depression Score
 </th>
 <th style="text-align:right;">
-mean stress score
+Average Anxiety Score
+</th>
+<th style="text-align:right;">
+Average Stress Score
 </th>
 </tr>
 </thead>
@@ -1934,7 +1919,10 @@ mean stress score
 High school
 </td>
 <td style="text-align:left;">
-Rural (country side)
+Rural
+</td>
+<td style="text-align:right;">
+2871
 </td>
 <td style="text-align:right;">
 21.94
@@ -1951,7 +1939,10 @@ Rural (country side)
 Graduate degree
 </td>
 <td style="text-align:left;">
-Urban (town, city)
+Urban
+</td>
+<td style="text-align:right;">
+2055
 </td>
 <td style="text-align:right;">
 18.24
@@ -1966,15 +1957,145 @@ Urban (town, city)
 </tbody>
 </table>
 </div>
-<div id="task-3" class="section level2">
-<h2>Task 3</h2>
+<div id="task-3" class="section level1">
+<h1>Task 3</h1>
+<pre class="r"><code>r1&lt;-str_detect(data_filtered$major, &quot;gine&quot;)
+r&lt;-as.numeric(r1)
+
+data_raw &lt;- bind_cols(data_filtered, r)</code></pre>
+<pre><code>## New names:
+## • `` -&gt; `...173`</code></pre>
+<pre class="r"><code>data_raw &lt;- data_raw |&gt; rename(engineer=...173)
+
+data_raw$hand &lt;- case_match(
+  data_raw$hand,
+  1 ~ 0,
+  2 ~ 1,
+  3 ~ 0,
+  .default = NA
+)
+
+data_raw$engineer &lt;- case_match(
+  data_raw$engineer,
+  0 ~ &quot;other major&quot;,
+  1 ~ &quot;engineer&quot;,
+  NA ~ &quot;no major&quot;
+)
+
+lefthand &lt;- data_raw |&gt;
+  group_by(engineer) |&gt;
+  summarise(
+    n = n(),
+    avg_hand = mean(hand, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  )
+
+kable(lefthand, 
+      digits = 2, 
+      col.names = c(&quot;Engineer&quot;, &quot;Number&quot;, &quot;Proportion&quot;),
+      caption = &quot;A comparision of left-handedness of engineers and non-engineers&quot;) |&gt;
+  kable_classic() |&gt;
+  kable_styling(full_width = FALSE, font_size = 20) </code></pre>
+<table class=" lightable-classic table" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; font-size: 20px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+A comparision of left-handedness of engineers and non-engineers
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Engineer
+</th>
+<th style="text-align:right;">
+Number
+</th>
+<th style="text-align:right;">
+Proportion
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+engineer
+</td>
+<td style="text-align:right;">
+3387
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+no major
+</td>
+<td style="text-align:right;">
+10149
+</td>
+<td style="text-align:right;">
+0.11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+other major
+</td>
+<td style="text-align:right;">
+22887
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="task-4" class="section level2">
-<h2>Task 4</h2>
-</div>
-<div id="task-5" class="section level2">
-<h2>Task 5</h2>
-</div>
+<div id="task-4" class="section level1">
+<h1>Task 4</h1>
+<pre class="r"><code>data_raw &lt;- data_raw  |&gt;
+  mutate(total_time = introelapse + testelapse + surveyelapse)
+
+summ_total &lt;- data_raw |&gt;
+  group_by(country) |&gt;
+  summarise(
+    observations = n(),
+    avg_time = mean(total_time, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  ) |&gt;
+  filter(observations &gt; 100) |&gt;
+  filter(observations &gt; 100 &amp; avg_time == max(avg_time))
+
+kable(summ_total, col.names = c(&quot;Country&quot;, &quot;Observations&quot;, &quot;Average Time&quot;)) |&gt;
+  kable_classic() |&gt;
+  kable_styling(full_width = FALSE, font_size = 20)</code></pre>
+<table class=" lightable-classic table" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; font-size: 20px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Country
+</th>
+<th style="text-align:right;">
+Observations
+</th>
+<th style="text-align:right;">
+Average Time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+GB
+</td>
+<td style="text-align:right;">
+1040
+</td>
+<td style="text-align:right;">
+38154.79
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 
