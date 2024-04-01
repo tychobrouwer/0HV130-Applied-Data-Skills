@@ -178,3 +178,66 @@ print(density_plot)
 
 # Question 4
 ## Part 1
+
+```{r}
+
+cor_from_rnorm <- function(sample_size, correlation_size) {
+  dat = rnorm_multi(
+    n = sample_size, 
+    vars = 2,
+    mu = 0,
+    sd = 1,
+    r = c(correlation_size),
+    varnames = c("x", "y")
+  )
+  
+  cor = cor(dat$x, dat$y, method = "spearman")
+  
+  return(cor)
+}
+```
+
+## Part 2
+
+```{r}
+sample_sizes <- rep(50, 50000)
+Q4_1 = sim_values <- sapply(sample_sizes, cor_from_rnorm, correlation_size=0.4)
+```
+
+## Part 3
+
+```{r}
+Q4_2 <- quantile(Q4_1, c(0.025,0.975))
+print(Q4_2)
+
+norm_sim_plot <- ggplot() + 
+  geom_histogram(aes(Q4_1), color= 'blue', fill = 'lightblue', alpha = 0.5, bins = 30) + 
+  geom_vline(xintercept = Q4_2, color = 'red') +
+  labs(x = 'Simulated correlation', y = 'Observations', title = 'Histogram plot for a simulated confidence interval for a correlation of 0.4.')
+
+print(norm_sim_plot)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
