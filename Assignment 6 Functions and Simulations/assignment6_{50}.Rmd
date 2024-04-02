@@ -218,6 +218,7 @@ print(norm_sim_plot)
 ```
 
 # Question 5
+
 ## Part 1
 
 ```{r}
@@ -237,6 +238,7 @@ norm_sim_plot <- ggplot() +
 
 print(norm_sim_plot)
 ```
+
 ## Part 3
 
 ```{r}
@@ -250,7 +252,7 @@ Q5_4 = mean(Q5_3 > Q5_2["97.5%"]) + mean(Q5_3 < Q5_2["2.5%"])
 print(Q5_4)
 ```
 
-## Part 2
+## Part 5
 
 ```{r}
 norm_sim_plot <- ggplot() + 
