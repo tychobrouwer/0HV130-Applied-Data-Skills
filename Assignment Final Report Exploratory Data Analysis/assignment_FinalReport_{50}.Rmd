@@ -1,0 +1,19 @@
+---
+title: "Final report - Exploratory Data analysis"
+subtitle: '2030071 - 1753320'
+author: "Group 50: Romée Simons and Tycho Brouwer"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
