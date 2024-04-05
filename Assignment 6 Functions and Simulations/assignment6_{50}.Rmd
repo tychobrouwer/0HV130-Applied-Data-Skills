@@ -187,7 +187,7 @@ cor_from_rnorm <- function(sample_size, correlation_size) {
     vars = 2,
     mu = 0,
     sd = 1,
-    r = c(correlation_size),
+    r = correlation_size,
     varnames = c("x", "y")
   )
   
@@ -200,30 +200,68 @@ cor_from_rnorm <- function(sample_size, correlation_size) {
 ## Part 2
 
 ```{r}
-sample_sizes <- rep(50, 50000)
-Q4_1 = sim_values <- sapply(sample_sizes, cor_from_rnorm, correlation_size=0.4)
+Q4_1 = sim_values <- replicate(50000, cor_from_rnorm(50, 0.4))
 ```
 
 ## Part 3
 
 ```{r}
-Q4_2 <- quantile(Q4_1, c(0.025,0.975))
+Q4_2 <- quantile(Q4_1, c(0.025, 0.975))
 print(Q4_2)
 
 norm_sim_plot <- ggplot() + 
-  geom_histogram(aes(Q4_1), color= 'blue', fill = 'lightblue', alpha = 0.5, bins = 30) + 
+  geom_density(aes(Q4_1), color= 'blue', fill = 'lightblue', alpha = 0.5) + 
   geom_vline(xintercept = Q4_2, color = 'red') +
-  labs(x = 'Simulated correlation', y = 'Observations', title = 'Histogram plot for a simulated confidence interval for a correlation of 0.4.')
+  labs(x = 'Simulated correlation', y = 'Density', title = 'Histogram plot for a simulated confidence interval for a correlation of 0.4\nwith vertical lines at the quantiles .025 and .975.')
 
 print(norm_sim_plot)
 ```
 
+# Question 5
 
+## Part 1
 
+```{r}
+Q5_1 = sim_values <- replicate(50000, cor_from_rnorm(50, 0.0))
+```
 
+## Part 2
 
+```{r}
+Q5_2 <- quantile(Q5_1, c(0.025, 0.975))
+print(Q5_2)
 
+norm_sim_plot <- ggplot() + 
+  geom_density(aes(Q5_1), color= 'blue', fill = 'lightblue', alpha = 0.5) + 
+  geom_vline(xintercept = Q5_2, color = 'red') +
+  labs(x = 'Simulated correlation', y = 'Density', title = 'Histogram plot for a simulated confidence interval for a correlation of 0.0\nwith vertical lines at the quantiles .025 and .975.')
 
+print(norm_sim_plot)
+```
+
+## Part 3
+
+```{r}
+Q5_3 = sim_values <- replicate(50000, cor_from_rnorm(50, 0.3))
+```
+
+## Part 4
+
+```{r}
+Q5_4 = mean(Q5_3 > Q5_2["97.5%"]) + mean(Q5_3 < Q5_2["2.5%"])
+print(Q5_4)
+```
+
+## Part 5
+
+```{r}
+norm_sim_plot <- ggplot() + 
+  geom_density(aes(Q5_3), color= 'blue', fill = 'lightblue', alpha = 0.5) + 
+  geom_vline(xintercept = Q5_2, color = 'red') +
+  labs(x = 'Simulated correlation', y = 'Density', title = 'Histogram plot for a simulated confidence interval for a correlation of 0.3\nwith horizontal lines at critical values for rejecting the null hypothesis.')
+
+print(norm_sim_plot)
+```
 
 
 
