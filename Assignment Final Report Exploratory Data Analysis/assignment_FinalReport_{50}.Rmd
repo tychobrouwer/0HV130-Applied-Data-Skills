@@ -15,5 +15,45 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(psych)
+library(kableExtra)
+library(reprores)
+
+
 ```
+
+# Part 1 - Exploring the data
+## 1 inspecting the summary statistics
+```{r}
+data_Sleep_Fatigue_AlcoholUse <- read_csv('df_Sleep_Fatigue_AlcoholUse.csv') 
+
+summary(data_Sleep_Fatigue_AlcoholUse)
+
+```
+
+```{r}
+filtered_data <- data.frame( 'Trait self-control' = data_Sleep_Fatigue_AlcoholUse$TSC,
+                            'Concentration (CIS)' = data_Sleep_Fatigue_AlcoholUse$CIS_Concentration, 
+                            'Disturbances in sleep quality (PSQI)' = data_Sleep_Fatigue_AlcoholUse$PSQI_GlobalScore, 
+                            'Chronotype (MCTQ)' = data_Sleep_Fatigue_AlcoholUse$MCTQ_MSFsc, 
+                            'Alcohol usage (AUDIT)' =  data_Sleep_Fatigue_AlcoholUse$AUDIT_Score) %>%
+  describe(fast = TRUE)
+
+
+description_filtered_data <- subset(filtered_data, select = -c(vars, range, se)) #to delete the variables that are not in the table
+
+rownames(description_filtered_data) <- c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
+
+kable(description_filtered_data,
+      digits = 2,
+      caption = 'Table 1. Descriptive Statistics', 
+      col.names = c('*n*', '*mean*', '*sd*', '*min*', '*max*')) |>
+  kable_classic() |>
+  kable_styling(full_width = FALSE, font_size = 20)
+
+
+```
+
 
