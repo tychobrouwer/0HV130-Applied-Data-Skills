@@ -1,18 +1,100 @@
 ---
-title: "Dashboard final assignment"
-subtitle: '2030071 - 1753320'
-author: "Group 50: Romée Simons and Tycho Brouwer"
-date: "`r Sys.Date()`"
-output:
-  html_document:
-    theme: cosmo
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-    number_sections: false
+title: "Dashboard 0HV130"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(flexdashboard)
+
+library(tidyverse)
+library(psych)
+library(kableExtra)
+library(reprores)
+library(plotly)
+```
+
+```{r}
+data_Sleep_Fatigue_AlcoholUse <- read_csv('df_Sleep_Fatigue_AlcoholUse.csv')
+
+filtered_data <- data.frame('Trait self-control' = data_Sleep_Fatigue_AlcoholUse$TSC,
+                            'Concentration (CIS)' = data_Sleep_Fatigue_AlcoholUse$CIS_Concentration, 
+                            'Disturbances in sleep quality (PSQI)' = data_Sleep_Fatigue_AlcoholUse$PSQI_GlobalScore, 
+                            'Chronotype (MCTQ)' = data_Sleep_Fatigue_AlcoholUse$MCTQ_MSFsc, 
+                            'Alcohol usage (AUDIT)' =  data_Sleep_Fatigue_AlcoholUse$AUDIT_Score)
+
+description_filtered_data <- subset(filtered_data, select = -c(vars, range, se))
+
+rownames(description_filtered_data) <- c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
+```
+
+Tables {data-orientation=rows data-icon="fa-table"}
+=====================================  
+
+Row 
+-------------------------------------
+
+### Total number of participants
+
+```{r}
+nRows <- nrow(data_Sleep_Fatigue_AlcoholUse)
+valueBox(nRows, icon = "fa-users")
+```
+
+### Total number of variables
+
+```{r}
+nColumns <- ncol(data_Sleep_Fatigue_AlcoholUse)
+valueBox(nColumns, icon = "fa-database")
+```
+
+### Total number of missings
+
+```{r}
+missingValues <- sum(is.na(data_Sleep_Fatigue_AlcoholUse))
+valueBox(missingValues, icon = "fa-trash-can", color = "warning")
+```
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+   
+### Descriptive statistics
+
+```{r}
+kable(description_filtered_data,
+      digits = 2,
+      caption = 'Table 1. Descriptive Statistics') |>
+  kable_classic() |>
+  kable_styling(full_width = FALSE, font_size = 20)
+```
+ 
+### Dataframe
+
+```{r}
+```
+   
+Visualizations {data-orientation=rows  data-icon="fa-signal"}
+=====================================     
+   
+Row {data-height=600}
+-------------------------------------
+
+### Chart 1
+
+```{r}
+```
+
+Row {data-height=400}
+-------------------------------------
+   
+### Chart 2
+
+```{r}
+```   
+    
+### Chart 3
+
+```{r}
 ```

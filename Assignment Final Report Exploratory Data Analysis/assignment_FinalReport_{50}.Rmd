@@ -20,40 +20,71 @@ library(tidyverse)
 library(psych)
 library(kableExtra)
 library(reprores)
-
-
+library(ggpubr)
 ```
 
 # Part 1 - Exploring the data
-## 1 inspecting the summary statistics
-```{r}
+## 1 Inspecting the summary statistics
+
+```{r, step 1a}
 data_Sleep_Fatigue_AlcoholUse <- read_csv('df_Sleep_Fatigue_AlcoholUse.csv') 
 
 summary(data_Sleep_Fatigue_AlcoholUse)
 
 ```
 
-```{r}
-filtered_data <- data.frame( 'Trait self-control' = data_Sleep_Fatigue_AlcoholUse$TSC,
+```{r, 1b}
+filtered_data <- data.frame('Trait self-control' = data_Sleep_Fatigue_AlcoholUse$TSC,
                             'Concentration (CIS)' = data_Sleep_Fatigue_AlcoholUse$CIS_Concentration, 
                             'Disturbances in sleep quality (PSQI)' = data_Sleep_Fatigue_AlcoholUse$PSQI_GlobalScore, 
                             'Chronotype (MCTQ)' = data_Sleep_Fatigue_AlcoholUse$MCTQ_MSFsc, 
-                            'Alcohol usage (AUDIT)' =  data_Sleep_Fatigue_AlcoholUse$AUDIT_Score) %>%
+                            'Alcohol usage (AUDIT)' =  data_Sleep_Fatigue_AlcoholUse$AUDIT_Score)
+colnames(filtered_data) <- c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
+
+description_filtered_data <- filtered_data  %>%
   describe(fast = TRUE)
 
+shown_columns <- c('n', 'mean', 'sd', 'min', 'max')
+description_filtered_data <- description_filtered_data[shown_columns]
 
-description_filtered_data <- subset(filtered_data, select = -c(vars, range, se)) #to delete the variables that are not in the table
-
-rownames(description_filtered_data) <- c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
+colnames(description_filtered_data) <- c('*n*', '*mean*', '*sd*', '*min*', '*max*')
 
 kable(description_filtered_data,
       digits = 2,
-      caption = 'Table 1. Descriptive Statistics', 
-      col.names = c('*n*', '*mean*', '*sd*', '*min*', '*max*')) |>
+      caption = 'Table 1. Descriptive Statistics') |>
   kable_classic() |>
   kable_styling(full_width = FALSE, font_size = 20)
+```
 
+## 2 Inspecting the variance
+
+```{r, step 2}
+create_hist <- function(x, data, label, fill_color, min_value, max_value) {
+  plot <- ggplot(data, aes(x = .data[[x]])) + 
+    geom_histogram(fill=fill_color) +
+    xlim(min_value, max_value) +
+    xlab(label)
+  return(plot)
+}
+
+filtered_data <- na.omit(filtered_data)
+
+plots_step_2 = list()
+for (column in colnames(filtered_data)) {
+  newplot = create_hist(column, filtered_data, column, "red", min(filtered_data[column]), max(filtered_data[column]))
+  plots_step_2 <- append(plots_step_2, list(newplot))
+}
+
+figure1 <- ggarrange(plotlist = plots_step_2)
+
+print(figure1)
 
 ```
+
+
+
+
+
+
 
 
