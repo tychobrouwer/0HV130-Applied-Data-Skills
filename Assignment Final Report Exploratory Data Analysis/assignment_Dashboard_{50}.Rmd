@@ -14,20 +14,18 @@ library(psych)
 library(kableExtra)
 library(reprores)
 library(plotly)
+library(DT)
 ```
 
 ```{r}
-data_Sleep_Fatigue_AlcoholUse <- read_csv('df_Sleep_Fatigue_AlcoholUse.csv')
+data_Sleep_Fatigue_AlcoholUse <- read_csv('df_Sleep_Fatigue_AlcoholUse.csv', show_col_types = FALSE)
 
-filtered_data <- data.frame('Trait self-control' = data_Sleep_Fatigue_AlcoholUse$TSC,
-                            'Concentration (CIS)' = data_Sleep_Fatigue_AlcoholUse$CIS_Concentration, 
-                            'Disturbances in sleep quality (PSQI)' = data_Sleep_Fatigue_AlcoholUse$PSQI_GlobalScore, 
-                            'Chronotype (MCTQ)' = data_Sleep_Fatigue_AlcoholUse$MCTQ_MSFsc, 
-                            'Alcohol usage (AUDIT)' =  data_Sleep_Fatigue_AlcoholUse$AUDIT_Score)
-
-description_filtered_data <- subset(filtered_data, select = -c(vars, range, se))
-
-rownames(description_filtered_data) <- c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
+filtered_data <- data.frame('ID' = data_Sleep_Fatigue_AlcoholUse$ID,
+                            'TSC' = data_Sleep_Fatigue_AlcoholUse$TSC,
+                            'CIS_Concentration' = data_Sleep_Fatigue_AlcoholUse$CIS_Concentration,
+                            'PSQI_GlobalScore' = data_Sleep_Fatigue_AlcoholUse$PSQI_GlobalScore,
+                            'MCTQ_MSFsc' = data_Sleep_Fatigue_AlcoholUse$MCTQ_MSFsc,
+                            'AUDIT_Score' =  data_Sleep_Fatigue_AlcoholUse$AUDIT_Score)
 ```
 
 Tables {data-orientation=rows data-icon="fa-table"}
@@ -63,16 +61,27 @@ Row {.tabset .tabset-fade}
 ### Descriptive statistics
 
 ```{r}
+
+description_filtered_data = filtered_data[,!(names(filtered_data) == "ID")]
+description_filtered_data <- description_filtered_data  %>%
+  describe(fast = TRUE)
+
+rownames(description_filtered_data) <- c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
+
+shown_columns <- c('n', 'mean', 'sd', 'min', 'max')
+description_filtered_data <- description_filtered_data[shown_columns]
+
+colnames(description_filtered_data) <- c('*n*', '*mean*', '*sd*', '*min*', '*max*')
 kable(description_filtered_data,
       digits = 2,
       caption = 'Table 1. Descriptive Statistics') |>
-  kable_classic() |>
-  kable_styling(full_width = FALSE, font_size = 20)
+  kable_classic(full_width = FALSE, position="float_left")
 ```
  
 ### Dataframe
 
 ```{r}
+datatable(filtered_data)
 ```
    
 Visualizations {data-orientation=rows  data-icon="fa-signal"}
