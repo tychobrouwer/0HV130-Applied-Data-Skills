@@ -21,13 +21,14 @@ library(psych)
 library(kableExtra)
 library(reprores)
 library(ggpubr)
+library(plotly)
 ```
 
 # Part 1 - Exploring the data
 ## 1 Inspecting the summary statistics
 
 ```{r, step 1a}
-data_Sleep_Fatigue_AlcoholUse <- read_csv('df_Sleep_Fatigue_AlcoholUse.csv') 
+data_Sleep_Fatigue_AlcoholUse <- read_csv('df_Sleep_Fatigue_AlcoholUse.csv', show_col_types = FALSE) 
 
 summary(data_Sleep_Fatigue_AlcoholUse)
 
@@ -63,7 +64,8 @@ create_hist <- function(x, data, label, fill_color, min_value, max_value) {
   plot <- ggplot(data, aes(x = .data[[x]])) + 
     geom_histogram(fill=fill_color, bins=10) +
     xlim(min_value, max_value) +
-    xlab(label)
+    xlab(label) + 
+    ylab('frequency')
   return(plot)
 }
 
@@ -81,9 +83,51 @@ print(figure1)
 
 ```
 
+## 3 Inspecting the central tendency
 
+```{r}
+#not sure how to select the graph out of the list and then add the vline
 
+figure2 <- create_hist(colnames(filtered_data)[1], filtered_data, colnames(filtered_data)[1], 'red', min(filtered_data[[1]]), max(filtered_data[[1]])) +
+  geom_vline(xintercept = mean(filtered_data[[1]]), color = "black", size = 1)
+  
+```
 
+```{r}
+mean <- round(mean(filtered_data[[1]]),2)
+
+figure3 <- figure2 +
+  annotate('text', label = paste('mean = ', mean), x = 3.10, y = 21)
+
+print(figure3)
+```
+
+## 4 Detecting potential outliers
+```{r}
+#4a
+```
+
+```{r}
+figure4 <- 
+  figure3 +
+  geom_vline(xintercept = sd(filtered_data[[1]])*2)
+
+print(figure4)
+```
+
+```{r}
+#4c
+```
+
+```{r}
+figure6 <- ggplot() +
+  geom_boxplot(aes(filtered_data[[1]]))+
+  xlab('Trait self-control') +
+  ylab('frequency') +
+  ggtitle('Boxplot of TSC')
+
+print(figure6)
+```
 
 
 
