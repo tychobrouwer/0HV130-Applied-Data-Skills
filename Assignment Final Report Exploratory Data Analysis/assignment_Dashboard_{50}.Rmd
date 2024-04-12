@@ -91,15 +91,41 @@ Visualizations {data-icon="fa-signal"}
 Column {data-width=500}
 -------------------------------------
 
-### Histogram of the
+### Histogram Trait self-control score of the participants
 
 ```{r}
+create_hist <- function(x, data, label, fill_color, min_value, max_value) {
+  plot <- ggplot(data, aes(x = .data[[x]])) + 
+    geom_histogram(fill=fill_color, bins=10) +
+    xlim(min_value, max_value) +
+    xlab(label) + 
+    ylab('Frequency')
+  return(plot)
+}
+
+filtered_data <- na.omit(filtered_data)
+
+sd <- sd(filtered_data[[2]])
+sd_2 <- sd(filtered_data[[2]])*2
+mean <- mean(filtered_data[[2]])
+lowerbound <- (mean - sd_2)
+upperbound <- (mean + sd_2)
+
+figure4 <- create_hist('TSC', filtered_data, 'Trait self-control (TSC)', 'red', 1.2, 4.7) +
+  geom_vline(xintercept = mean, color = 'black') +
+  geom_vline(xintercept = upperbound) +
+  geom_vline(xintercept = lowerbound, ) +
+  annotate('text', label = paste("mean = ", round(mean, 2)), x = 3.23, y = 21) +
+  annotate('text', label = paste("-2σ = ", round(lowerbound, 2)), x = 2.05, y = 21) +
+  annotate('text', label = paste("2σ = ", round(upperbound, 2)), x = 4.28, y = 21)
+
+ggplotly(figure4)
 ```
 
 Column {data-width=500}
 -------------------------------------
 
-### Heatmap correlation between variables
+### Heatmap correlation between the scores of the participants
 
 ```{r}
 shown_columns = c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
@@ -114,7 +140,7 @@ ggcorrplot(corr, lab = TRUE, tl.cex = 10)
 
 ### Description
 
-The left shows a histogram of the ...
+The left shows a histogram of the trait self-control (TSC) test score. The mean and 95% confidence intervals are visualized with the vertical lines. The sampled data appears to be normally distributed with a mean TSC score of ```r round(mean, 2)```, with a standard deviation of ```r round(sd, 2)```.
 
 The top right figure shows the correlation between the different variables in the database. From the heatmap, can be seen that there is a strong negative correlation between the disturbances in sleep quality (PSQI) and concentration (CIS) score. And a negative relation between the alcohol usage (AUDIT) of the participants and the trait self-control score. A positive correlation can be found between the chronotype (MCTQ) and both the disturbances in sleep quality and alcohol usage (AUDIT).
 

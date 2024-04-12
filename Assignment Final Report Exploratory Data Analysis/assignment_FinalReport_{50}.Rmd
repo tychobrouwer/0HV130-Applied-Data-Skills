@@ -135,13 +135,10 @@ figure4 <-
   geom_vline(xintercept = upperbound) +
   geom_vline(xintercept = lowerbound) +
   ggtitle('Figure 4')
-
-print(figure4)
 ```
 
 ```{r echo=TRUE}
 figure5 <- ggplotly(figure4)
-  # + ggtitle('Figure 5')
 
 figure5
 ```
@@ -155,6 +152,8 @@ figure6 <- ggplot() +
 
 print(figure6)
 ```
+
+The previous conclusion changes with respect to outliers, since the boxplot only visualizes a single outlier, compared to the two determined using a difference of twice the standard deviation.
 
 ## 5 Inspecting covariance
 
