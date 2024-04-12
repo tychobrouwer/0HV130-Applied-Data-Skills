@@ -26,6 +26,7 @@ library(plotly)
 ```
 
 # Part 1 - Exploring the data
+
 ## 1 Inspecting the summary statistics
 
 ```{r, step 1a}
@@ -134,7 +135,7 @@ figure4 <-
   figure3 +
   geom_vline(xintercept = upperbound) +
   geom_vline(xintercept = lowerbound) +
-  ggtitle('Figure 4')
+  ggtitle('Figure 5')
 ```
 
 ```{r echo=TRUE}
