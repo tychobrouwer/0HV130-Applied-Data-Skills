@@ -22,6 +22,7 @@ library(kableExtra)
 library(reprores)
 library(ggpubr)
 library(ggcorrplot)
+library(plotly)
 ```
 
 # Part 1 - Exploring the data
@@ -87,7 +88,6 @@ print(figure1)
 ## 3 Inspecting the central tendency
 
 ```{r}
-<<<<<<< HEAD
 #we need to use the lowerbound for the graph, because it is lower than the minimum value
 sd_2 <- sd(filtered_data[[1]])*2
 mean <- mean(filtered_data[[1]])
@@ -97,16 +97,6 @@ upperbound <- (mean + sd_2)
 figure2 <- create_hist('Trait self-control', filtered_data, 'Trait self-control', 'red', lowerbound, max(filtered_data[[1]])) +
   geom_vline(xintercept = mean(filtered_data[[1]]), color = 'black') +
   ggtitle('Figure 2')
-
-=======
-#not sure how to select the graph out of the list and then add the vline (I think this is what you wanted?)
-
-figure2 <- plots_step_2[[1]] +
-  geom_vline(xintercept = mean(filtered_data[[1]]), color = "black", linewidth = 1)
-
-#figure2 <- create_hist(colnames(filtered_data)[1], filtered_data, colnames(filtered_data)[1], 'red', min(filtered_data[[1]]), max(filtered_data[[1]])) +
-#  geom_vline(xintercept = mean(filtered_data[[1]]), color = "black", size = 1)
->>>>>>> a3656452ec7fb4475324f8f7eea55764b784aa94
 ```
 
 ```{r}
