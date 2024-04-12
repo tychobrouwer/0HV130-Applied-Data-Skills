@@ -21,7 +21,7 @@ library(psych)
 library(kableExtra)
 library(reprores)
 library(ggpubr)
-library(plotly)
+library(ggcorrplot)
 ```
 
 # Part 1 - Exploring the data
@@ -86,11 +86,13 @@ print(figure1)
 ## 3 Inspecting the central tendency
 
 ```{r}
-#not sure how to select the graph out of the list and then add the vline
+#not sure how to select the graph out of the list and then add the vline (I think this is what you wanted?)
 
-figure2 <- create_hist(colnames(filtered_data)[1], filtered_data, colnames(filtered_data)[1], 'red', min(filtered_data[[1]]), max(filtered_data[[1]])) +
-  geom_vline(xintercept = mean(filtered_data[[1]]), color = "black", size = 1)
-  
+figure2 <- plots_step_2[[1]] +
+  geom_vline(xintercept = mean(filtered_data[[1]]), color = "black", linewidth = 1)
+
+#figure2 <- create_hist(colnames(filtered_data)[1], filtered_data, colnames(filtered_data)[1], 'red', min(filtered_data[[1]]), max(filtered_data[[1]])) +
+#  geom_vline(xintercept = mean(filtered_data[[1]]), color = "black", size = 1)
 ```
 
 ```{r}
@@ -103,6 +105,7 @@ print(figure3)
 ```
 
 ## 4 Detecting potential outliers
+
 ```{r}
 #4a
 ```
@@ -128,6 +131,23 @@ figure6 <- ggplot() +
 
 print(figure6)
 ```
+
+## 5 Inspecting covariance
+
+```{r}
+corr <- cor(filtered_data)
+figure7 <- ggcorrplot(corr, hc.order = TRUE, lab = TRUE)
+
+print(figure7)
+
+```
+
+
+
+
+
+
+
 
 
 
