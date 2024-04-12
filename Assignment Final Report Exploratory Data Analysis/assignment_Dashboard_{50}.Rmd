@@ -91,7 +91,7 @@ Visualizations {data-icon="fa-signal"}
 Column {data-width=500}
 -------------------------------------
 
-### Histogram Trait self-control score of the participants
+### Histogram trait self-control score of the participants
 
 ```{r}
 create_hist <- function(x, data, label, fill_color, min_value, max_value) {
