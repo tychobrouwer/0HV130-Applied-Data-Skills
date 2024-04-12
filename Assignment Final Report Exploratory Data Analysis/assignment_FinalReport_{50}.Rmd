@@ -35,11 +35,12 @@ summary(data_Sleep_Fatigue_AlcoholUse)
 ```
 
 ```{r, 1b}
-filtered_data <- data.frame('Trait self-control' = data_Sleep_Fatigue_AlcoholUse$TSC,
+filtered_data <- data.frame( 'Trait self-control' = data_Sleep_Fatigue_AlcoholUse$TSC,
                             'Concentration (CIS)' = data_Sleep_Fatigue_AlcoholUse$CIS_Concentration, 
                             'Disturbances in sleep quality (PSQI)' = data_Sleep_Fatigue_AlcoholUse$PSQI_GlobalScore, 
                             'Chronotype (MCTQ)' = data_Sleep_Fatigue_AlcoholUse$MCTQ_MSFsc, 
                             'Alcohol usage (AUDIT)' =  data_Sleep_Fatigue_AlcoholUse$AUDIT_Score)
+
 colnames(filtered_data) <- c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
 
 description_filtered_data <- filtered_data  %>%
@@ -65,7 +66,7 @@ create_hist <- function(x, data, label, fill_color, min_value, max_value) {
     geom_histogram(fill=fill_color, bins=10) +
     xlim(min_value, max_value) +
     xlab(label) + 
-    ylab('frequency')
+    ylab('Frequency')
   return(plot)
 }
 
@@ -86,6 +87,18 @@ print(figure1)
 ## 3 Inspecting the central tendency
 
 ```{r}
+<<<<<<< HEAD
+#we need to use the lowerbound for the graph, because it is lower than the minimum value
+sd_2 <- sd(filtered_data[[1]])*2
+mean <- mean(filtered_data[[1]])
+lowerbound <- (mean - sd_2)
+upperbound <- (mean + sd_2)
+
+figure2 <- create_hist('Trait self-control', filtered_data, 'Trait self-control', 'red', lowerbound, max(filtered_data[[1]])) +
+  geom_vline(xintercept = mean(filtered_data[[1]]), color = 'black') +
+  ggtitle('Figure 2')
+
+=======
 #not sure how to select the graph out of the list and then add the vline (I think this is what you wanted?)
 
 figure2 <- plots_step_2[[1]] +
@@ -93,13 +106,15 @@ figure2 <- plots_step_2[[1]] +
 
 #figure2 <- create_hist(colnames(filtered_data)[1], filtered_data, colnames(filtered_data)[1], 'red', min(filtered_data[[1]]), max(filtered_data[[1]])) +
 #  geom_vline(xintercept = mean(filtered_data[[1]]), color = "black", size = 1)
+>>>>>>> a3656452ec7fb4475324f8f7eea55764b784aa94
 ```
 
 ```{r}
-mean <- round(mean(filtered_data[[1]]),2)
+mean_rounded <- round(mean(filtered_data[[1]]),2)
 
 figure3 <- figure2 +
-  annotate('text', label = paste('mean = ', mean), x = 3.10, y = 21)
+  annotate('text', label = paste('mean = ', mean_rounded), x = 3.10, y = 21) +
+  ggtitle('Figure 3')
 
 print(figure3)
 ```
@@ -107,27 +122,46 @@ print(figure3)
 ## 4 Detecting potential outliers
 
 ```{r}
-#4a
+
+outliers <- data_Sleep_Fatigue_AlcoholUse %>%
+  filter(TSC > upperbound | TSC < lowerbound)
+
+ID_outliers <- outliers$ID
+
+
+if (length(ID_outliers)<1){
+  print('There are no outliers')
+  print(paste('The maximum is',max(filtered_data[[1]])))
+  print(paste('The minimum is', min(filtered_data[[1]])))
+} else {
+print(paste('outlier:', ID_outliers))
+}
+
 ```
 
 ```{r}
 figure4 <- 
   figure3 +
-  geom_vline(xintercept = sd(filtered_data[[1]])*2)
+  geom_vline(xintercept = upperbound) +
+  geom_vline(xintercept = lowerbound) +
+  ggtitle('Figure 4')
 
 print(figure4)
 ```
 
-```{r}
-#4c
+```{r echo=TRUE}
+figure5 <- ggplotly(figure4)
+  # + ggtitle('Figure 5')
+
+print(figure5)
 ```
 
 ```{r}
 figure6 <- ggplot() +
-  geom_boxplot(aes(filtered_data[[1]]))+
+  geom_boxplot(aes(data_Sleep_Fatigue_AlcoholUse$TSC))+
   xlab('Trait self-control') +
   ylab('frequency') +
-  ggtitle('Boxplot of TSC')
+  ggtitle('Figure 6')
 
 print(figure6)
 ```
