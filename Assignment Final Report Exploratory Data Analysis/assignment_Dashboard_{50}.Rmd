@@ -15,6 +15,7 @@ library(kableExtra)
 library(reprores)
 library(plotly)
 library(DT)
+library(ggcorrplot)
 ```
 
 ```{r}
@@ -84,26 +85,46 @@ kable(description_filtered_data,
 datatable(filtered_data)
 ```
    
-Visualizations {data-orientation=rows  data-icon="fa-signal"}
+Visualizations {data-icon="fa-signal"}
 =====================================     
-   
-Row {data-height=600}
+
+Column {data-width=500}
 -------------------------------------
 
-### Chart 1
+### Histogram of the
 
 ```{r}
 ```
 
-Row {data-height=400}
+Column {data-width=500}
 -------------------------------------
-   
-### Chart 2
+
+### Heatmap correlation between variables
 
 ```{r}
+shown_columns = c('Trait self-control', 'Concentration (CIS)', 'Disturbances in sleep quality (PSQI)', 'Chronotype (MCTQ)', 'Alcohol usage (AUDIT)')
+
+filtered_data_heatmap <- na.omit(filtered_data)
+colnames(filtered_data_heatmap) <- shown_columns
+filtered_data_heatmap = filtered_data_heatmap[shown_columns]
+
+corr <- cor(filtered_data_heatmap)
+ggcorrplot(corr, lab = TRUE, tl.cex = 10)
 ```   
-    
-### Chart 3
 
-```{r}
-```
+### Description
+
+The left shows a histogram of the ...
+
+The top right figure shows the correlation between the different variables in the database. From the heatmap, can be seen that there is a strong negative correlation between the disturbances in sleep quality (PSQI) and concentration (CIS) score. And a negative relation between the alcohol usage (AUDIT) of the participants and the trait self-control score. A positive correlation can be found between the chronotype (MCTQ) and both the disturbances in sleep quality and alcohol usage (AUDIT).
+
+
+
+
+
+
+
+
+
+
+
